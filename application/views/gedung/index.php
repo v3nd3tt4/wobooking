@@ -36,6 +36,7 @@
                                         <th>
                                             <a href="<?=base_url()?>gedung/hapus/<?=$row_gedung->id_gedung?>" onclick="return confirm('are you sure?')" class="btn btn-xs btn-danger" ><i class="fa fa-remove"></i> Hapus</a>
                                             <a href="<?=base_url()?>gedung/edit/<?=$row_gedung->id_gedung?>" class="btn btn-xs btn-success" onclick="if(!confirm(\'Anda yakin mengedit data ini?\')) return false;"><i class="fa fa-pencil"></i> Edit</a>
+                                            <a href="<?=base_url()?>gedung/paket/<?=$row_gedung->id_gedung?>" class="btn btn-xs btn-warning" onclick="if(!confirm(\'Anda yakin mengedit data ini?\')) return false;"><i class="fa fa-building"></i> Paket</a>
 
                                         </th>
                                     </tr>
