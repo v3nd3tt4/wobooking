@@ -22,6 +22,9 @@ class Gedung extends CI_Controller {
         parent::__construct();
         $this->load->library('image_lib');
         $this->load->library('upload');
+        if(empty($this->session->userdata('id_user')) || $this->session->userdata('id_user') == ''){
+        	echo '<script>alert("Silahkan login terlebih dahulu!!");window.location.href = "'.base_url().'";</script>';
+        }
         
     }
 	public function index()
@@ -136,5 +139,79 @@ class Gedung extends CI_Controller {
 				}
 	        }
 	    }
+	}
+
+	public function paket ($id){
+		$data = array(
+			'page' => 'gedung/paket',
+			'link' => 'gedung',
+			'id_gedung' => $id,
+			'data_gedung' => $this->db->query("select * from tb_gedung where id_gedung = '$id'"),
+			'data_paket' => $this->db->query("select * from tb_paket where id_gedung = '$id'"),
+		);
+		$this->load->view('template_srtdash/wrapper', $data);
+	}
+
+	public function tambah_paket($id){
+		$data = array(
+			'page' => 'gedung/tambah_paket',
+			'link' => 'gedung',
+			'script' => 'gedung/script',
+			'id_gedung' => $id
+		);
+		$this->load->view('template_srtdash/wrapper', $data);
+	}
+
+	public function store_paket(){
+		$data = array(
+			'id_gedung'		=> $this->input->post('id_gedung', true),
+			'nama_paket'		=> $this->input->post('nama_paket', true),
+			'harga_paket'	=> $this->input->post('harga_paket', true),
+			'tgl_ketersediaan'=> $this->input->post('tanggal_ketersediaan', true),		
+			'status_paket'	=> $this->input->post('status', true),
+		);
+		$save = $this->db->insert('tb_paket', $data);
+		if($save){
+			echo '<script>alert("Berhasil disimpan!!");window.location.href = "'.base_url().'gedung/paket/'.$this->input->post('id_gedung', true).'";</script>';
+		}else{
+			echo '<script>alert("Gagal disimpan!!");window.history.back();</script>';
+		}
+	}
+
+	public function edit_paket($id_gedung, $id_paket){
+		$data = array(
+			'page' => 'gedung/edit_paket',
+			'script' => 'gedung/script',
+			'link' => 'gedung',
+			'id_gedung' => $id_gedung,
+			'id_paket' => $id_paket,
+			'data_paket' => $this->db->query("select * from tb_paket where id_paket = '$id_paket'")
+		);
+		$this->load->view('template_srtdash/wrapper', $data);
+	}
+
+	public function update_paket(){
+		$data = array(
+			// 'id_gedung'		=> $this->input->post('id_gedung', true),
+			'nama_paket'		=> $this->input->post('nama_paket', true),
+			'harga_paket'	=> $this->input->post('harga_paket', true),
+			'tgl_ketersediaan'=> $this->input->post('tanggal_ketersediaan', true),		
+			'status_paket'	=> $this->input->post('status', true),
+		);
+		$save = $this->db->update('tb_paket', $data, array('id_paket' => $this->input->post('id_paket', true)));
+		if($save){
+			echo '<script>alert("Berhasil disimpan!!");window.location.href = "'.base_url().'gedung/paket/'.$this->input->post('id_gedung', true).'";</script>';
+		}else{
+			echo '<script>alert("Gagal disimpan!!");window.history.back();</script>';
+		}
+	}
+
+	public function hapus_paket($id){
+		$hapus = $this->db->delete('tb_paket', array('id_paket' => $id));
+		if($hapus){
+			echo '<script>alert("Berhasil dihapus!!");window.history.back();</script>';
+		}else{
+			echo '<script>alert("Gagal dihapus!!");window.history.back();</script>';
+		}
 	}
 }

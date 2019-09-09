@@ -18,7 +18,6 @@
                             <ul class="collapse">
                                 <li <?=@$link == 'user' ? 'class="active"' : ''?>><a href="<?=base_url()?>user">User</a></li>
                                 <li <?=@$link == 'gedung' ? 'class="active"' : ''?>><a href="<?=base_url()?>gedung">Gedung</a></li>
-                                <li><a href="index3.html">Paket</a></li>
                             </ul>
                         </li>
                     </ul>

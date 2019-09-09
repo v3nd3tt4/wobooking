@@ -18,6 +18,16 @@ class User extends CI_Controller {
 	 * map to /index.php/welcome/<method_name>
 	 * @see https://codeigniter.com/user_guide/general/urls.html
 	 */
+	public function __construct(){
+        parent::__construct();
+        $this->load->library('image_lib');
+        $this->load->library('upload');
+        if(empty($this->session->userdata('id_user')) || $this->session->userdata('id_user') == ''){
+        	echo '<script>alert("Silahkan login terlebih dahulu!!");window.location.href = "'.base_url().'";</script>';
+        }
+        
+    }
+
 	public function index()
 	{
 		// var_dump("expression");exit();
