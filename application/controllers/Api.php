@@ -3,22 +3,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Api extends CI_Controller {
 
-	/**
-	 * Index Page for this controller.
-	 *
-	 * Maps to the following URL
-	 * 		http://example.com/index.php/welcome
-	 *	- or -
-	 * 		http://example.com/index.php/welcome/index
-	 *	- or -
-	 * Since this controller is set as the default controller in
-	 * config/routes.php, it's displayed at http://example.com/
-	 *
-	 * So any other public methods not prefixed with an underscore will
-	 * map to /index.php/welcome/<method_name>
-	 * @see https://codeigniter.com/user_guide/general/urls.html
-	 */
-
 	public function __construct(){
         parent::__construct();
 	}
@@ -71,8 +55,8 @@ class Api extends CI_Controller {
 			'no_hp'	=> $this->input->post('no_hp', true),
 			'alamat'	=> $this->input->post('alamat', true),
 			'password'	=> password_hash($this->input->post('password', true), PASSWORD_DEFAULT),
-			'level'=> 'user',
-			'jenis_kelamin'=> $this->input->post('jk', true),
+			'level'=> 'User',
+			'jenis_kelamin'=> $this->input->post('jenis_kelamin', true),
 		);
 		$save = $this->db->insert('tb_user', $data);
 		if($save){
