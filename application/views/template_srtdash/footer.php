@@ -214,6 +214,11 @@
     <!-- others plugins -->
     <script src="<?=base_url()?>assets_srtdash/js/plugins.js"></script>
     <script src="<?=base_url()?>assets_srtdash/js/scripts.js"></script>
+    <?php 
+    if(!empty($script)){
+        $this->load->view($script);
+    }
+    ?>
 </body>
 
 </html>
