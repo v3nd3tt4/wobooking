@@ -16,8 +16,8 @@
                         <li class="active">
                             <a href="javascript:void(0)" aria-expanded="true"><i class="ti-dashboard"></i><span>Master Data</span></a>
                             <ul class="collapse">
-                                <li class="active"><a href="<?=base_url()?>user">User</a></li>
-                                <li><a href="index2.html">Gedung</a></li>
+                                <li <?=@$link == 'user' ? 'class="active"' : ''?>><a href="<?=base_url()?>user">User</a></li>
+                                <li <?=@$link == 'gedung' ? 'class="active"' : ''?>><a href="<?=base_url()?>gedung">Gedung</a></li>
                                 <li><a href="index3.html">Paket</a></li>
                             </ul>
                         </li>

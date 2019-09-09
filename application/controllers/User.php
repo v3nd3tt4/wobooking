@@ -23,6 +23,7 @@ class User extends CI_Controller {
 		// var_dump("expression");exit();
 		$data = array(
 			'page' => 'user/index',
+			'link' => 'user',
 			'data_user' => $this->db->query("select * from tb_user")
 		);
 		$this->load->view('template_srtdash/wrapper', $data);
@@ -31,6 +32,7 @@ class User extends CI_Controller {
 	public function tambah(){
 		$data = array(
 			'page' => 'user/tambah',
+			'link' => 'user',
 			'script' => 'user/script'
 		);
 		$this->load->view('template_srtdash/wrapper', $data);
@@ -66,6 +68,7 @@ class User extends CI_Controller {
 	public function edit($id){
 		$data = array(
 			'page' => 'user/edit',
+			'link' => 'user',
 			'script' => 'user/script',
 			'data_user' => $this->db->query("select * from tb_user where id_user = '$id'")
 		);
