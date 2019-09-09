@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class User extends CI_Controller {
+class Api extends CI_Controller {
 
 	/**
 	 * Index Page for this controller.
@@ -18,30 +18,38 @@ class User extends CI_Controller {
 	 * map to /index.php/welcome/<method_name>
 	 * @see https://codeigniter.com/user_guide/general/urls.html
 	 */
+
+	public function __construct(){
+        parent::__construct();
+	}
+
 	public function login()
 	{
-		$username = $this->input->post('username', true);
+		$username = $this->input->post('email', true);
     	$password = $this->input->post('password', true);
 
     	$get = $this->db->query("select * from tb_user where email = '$username' ");
 
     	if($get->num_rows() == 0){
-	        $return = array('status' => 'gagal', 'message' => 'username tidak ditemukan');
+	        $return = array('status' => 'gagal', 'message' => 'Username tidak ditemukan !!');
 			echo json_encode($return);
     	}else{
     		$hash = $get->row()->password;
     		if (password_verify($password, $hash)) {
     			$sess = array(
-    				'login' => true,
-    				'id_user' => $get->row()->id_user,
+					'id_user' => $get->row()->id_user,
+					'nama' => $get->row()->nama,
+					'email' => $get->row()->email,
+					'no_hp' => $get->row()->no_hp,
+					'alamat' => $get->row()->alamat,
     				'level' => $get->row()->level,
-                    'nama_user' => $get->row()->nama
+    				'jenis_kelamin' => $get->row()->jenis_kelamin,
     			);
     			$this->session->set_userdata($sess);
-    			$return = array('status' => 'sukses', 'message' => 'login berhasil');
+    			$return = array('status' => 'sukses', 'message' => 'Login berhasil...', 'listUser'=>$sess);
 				echo json_encode($return);
 			} else {
-			    $return = array('status' => 'gagal', 'message' => 'password salah');
+			    $return = array('status' => 'gagal', 'message' => 'Password salah !!');
 				echo json_encode($return);
 			}
     	}
@@ -56,22 +64,22 @@ class User extends CI_Controller {
 		$this->load->view('template_srtdash/wrapper', $data);
 	}
 
-	public function register(){
+	public function signup(){
 		$data = array(
 			'nama'	=> $this->input->post('nama', true),
 			'email'	=> $this->input->post('email', true),
 			'no_hp'	=> $this->input->post('no_hp', true),
 			'alamat'	=> $this->input->post('alamat', true),
 			'password'	=> password_hash($this->input->post('password', true), PASSWORD_DEFAULT),
-			'level'=> 'guest',
+			'level'=> 'user',
 			'jenis_kelamin'=> $this->input->post('jk', true),
 		);
 		$save = $this->db->insert('tb_user', $data);
 		if($save){
-			$return = array('status' => 'sukses', 'message' => 'sukses mendaftar');
+			$return = array('status' => 'sukses', 'message' => 'Sukses mendaftar...');
 			echo json_encode($return);
 		}else{
-			$return = array('status' => 'gagal', 'message' => 'gagal mendaftar');
+			$return = array('status' => 'gagal', 'message' => 'Gagal mendaftar !!');
 			echo json_encode($return);
 		}
 	}
