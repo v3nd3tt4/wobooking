@@ -18,7 +18,7 @@
                     <div class="row">
                         <div class="col-md-4">
                             <div class="table-responsive">
-                                <table class="table table-stripped">
+                                <table id="myTable" class="table table-stripped">
                                     <tr>
                                         <td>Nama Gedung</td>
                                         <td><?=$data_gedung->row()->nama_gedung?></td>

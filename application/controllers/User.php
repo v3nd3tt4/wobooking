@@ -34,6 +34,7 @@ class User extends CI_Controller {
 		$data = array(
 			'page' => 'user/index',
 			'link' => 'user',
+			'script' => 'user/script',
 			'data_user' => $this->db->query("select * from tb_user")
 		);
 		$this->load->view('template_srtdash/wrapper', $data);

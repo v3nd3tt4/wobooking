@@ -33,6 +33,7 @@ class Gedung extends CI_Controller {
 		$data = array(
 			'page' => 'gedung/index',
 			'link' => 'gedung',
+			'script' => 'gedung/script',
 			'data_gedung' => $this->db->query("select * from tb_gedung")
 		);
 		$this->load->view('template_srtdash/wrapper', $data);
@@ -146,6 +147,7 @@ class Gedung extends CI_Controller {
 			'page' => 'gedung/paket',
 			'link' => 'gedung',
 			'id_gedung' => $id,
+			'script' => 'gedung/script',
 			'data_gedung' => $this->db->query("select * from tb_gedung where id_gedung = '$id'"),
 			'data_paket' => $this->db->query("select * from tb_paket where id_gedung = '$id'"),
 		);

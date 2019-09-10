@@ -16,7 +16,7 @@
 
                     <hr/>
                     <div class="table-responsive">
-                        <table class="table table-stripped table-bordered">
+                        <table id="myTable" class="table table-stripped table-bordered">
                             <thead>
                                 <tr>
                                     <th>No</th>

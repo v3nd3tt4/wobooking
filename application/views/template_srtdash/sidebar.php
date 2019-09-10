@@ -2,7 +2,7 @@
     <div class="sidebar-menu">
         <div class="sidebar-header">
             <div class="logo">
-                <a href="index.html">
+                <a href="<?=base_url()?>srtdash">
                     <h1 style="color: #fff">WO</h1>
                     <!-- <img src="<?=base_url()?>assets_srtdash/images/icon/logo.png" alt="logo"> -->
                 </a>
@@ -12,7 +12,7 @@
             <div class="menu-inner">
                 <nav>
                     <ul class="metismenu" id="menu">
-                        <li class="active"><a href="<?=base_url()?>"><i class="ti-map-alt"></i> <span>dashboard</span></a></li>
+                        <li class="active"><a href="<?=base_url()?>srtdash"><i class="ti-map-alt"></i> <span>dashboard</span></a></li>
                         <li class="active">
                             <a href="javascript:void(0)" aria-expanded="true"><i class="ti-dashboard"></i><span>Master Data</span></a>
                             <ul class="collapse">
