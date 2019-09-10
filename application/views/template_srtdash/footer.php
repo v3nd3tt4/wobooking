@@ -214,8 +214,9 @@
     <!-- others plugins -->
     <script src="<?=base_url()?>assets_srtdash/js/plugins.js"></script>
     <script src="<?=base_url()?>assets_srtdash/js/scripts.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
-  
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
     <?php 
     if(!empty($script)){
