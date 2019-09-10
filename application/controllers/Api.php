@@ -87,42 +87,24 @@ class Api extends CI_Controller {
 			$return = array('status' => 'gagal', 'message' => 'Data tidak ada !!');	 
 			echo json_encode($return);
 		}else{
-			$return = array('status' => 'sukses', 'message' => 'Data ada...', 'listUser'=>$query->result());
+			$return = array('status' => 'sukses', 'message' => 'Data ada...', 'listGedung'=>$query->result());
 			echo json_encode($return);
 		}
 	
 	}
 
-	public function paketAll(){
+	public function paketRow(){
 		$return = array();
-		$query = $this->db->query("select * from tb_paket");
+		$id_gedung = $this->input->post('id_gedung');
+		$query = $this->db->query("select * from tb_paket where id_gedung = '$id_gedung'");
 		if($query->num_rows() == 0){
 			$return = array('status' => 'gagal', 'message' => 'Data tidak ada !!');	 
 			echo json_encode($return);
 		}else{
-			$return = array('status' => 'sukses', 'message' => 'Data ada...', 'listUser'=>$query->result());
+			$return = array('status' => 'sukses', 'message' => 'Data ada...', 'listPaket'=>$query->result());
 			echo json_encode($return);
 		}
 	}
-
-	public function gedungRow(){
-		$id_gedung = $this->input->post('id_gedung');
-		$query = $this->db->query("select * from tb_gedung where id_gedung = '$id_gedung'");
-		echo json_encode($query->row());
-	}
-
-	public function paketRow(){
-		$id_paket = $this->input->post('id_paket');
-		$query = $this->db->query("select * from tb_paket where id_paket = '$id_paket'");
-		echo json_encode($query->row());
-	}
-
-	public function paketResult(){
-		$id_paket = $this->input->post('id_paket');
-		$query = $this->db->query("select * from tb_paket where id_paket = '$id_paket'");
-		echo json_encode($query->result());
-	}
-
 
 	public function ketersediaanGedung(){
 		$firstdate = '2019-09-08 06:06:00';
