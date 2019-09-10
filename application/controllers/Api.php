@@ -111,13 +111,13 @@ class Api extends CI_Controller {
 			$ket_paket = array();
 			foreach ($query_ket->result() as  $value) {
 				$tot += $value->harga_ket;
-				$ket_paket =array(
+				$ket_paket[] =array(
 					'id_keterangan' => $value->id_ket,
 					'nama_keterangan' => $value->nama_ket,
 					'harga_keterangan' => $value->harga_ket
 				);
 			}
-			$paket ['keterangan'] = $ket_paket;
+			$paket ['keterangan'][] = $ket_paket;
 
 		}
 		
