@@ -114,7 +114,7 @@ class Api extends CI_Controller {
 		$enddate = '2019-09-09 23:59:59';;
 		$id_gedung = $this->input->post('id_gedung');
 
-		$query = $this->db->query("select * from tb_pesan_gedung")
+		$query = $this->db->query("select * from tb_pesan_gedung");
 		if($query){
 			$result = array(
 				'status' => 'sukses',
