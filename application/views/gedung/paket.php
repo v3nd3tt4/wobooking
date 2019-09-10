@@ -48,7 +48,6 @@
                                     <th>No</th>
                                     <th>Nama Paket</th>
                                     <th>Harga Paket</th>
-                                    <th>Status</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -58,7 +57,6 @@
                                         <td><?=$no?>.</td>
                                         <td><?=$row_paket->nama_paket?></td>
                                         <td><?=$row_paket->harga_paket?></td>
-                                         <td><?=$row_paket->status_paket?></td>
                                         <th>
                                             <a href="<?=base_url()?>gedung/hapus_paket/<?=$row_paket->id_paket?>" onclick="return confirm('are you sure?')" class="btn btn-xs btn-danger" ><i class="fa fa-remove"></i> Hapus</a>
                                             <a href="<?=base_url()?>gedung/edit_paket/<?=$row_paket->id_gedung?>/<?=$row_paket->id_paket?>" class="btn btn-xs btn-success" onclick="if(!confirm(\'Anda yakin mengedit data ini?\')) return false;"><i class="fa fa-pencil"></i> Edit</a>

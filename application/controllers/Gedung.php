@@ -169,8 +169,6 @@ class Gedung extends CI_Controller {
 			'id_gedung'		=> $this->input->post('id_gedung', true),
 			'nama_paket'		=> $this->input->post('nama_paket', true),
 			'harga_paket'	=> $this->input->post('harga_paket', true),
-			'tgl_ketersediaan'=> $this->input->post('tanggal_ketersediaan', true),		
-			'status_paket'	=> $this->input->post('status', true),
 		);
 		$save = $this->db->insert('tb_paket', $data);
 		if($save){
@@ -197,8 +195,6 @@ class Gedung extends CI_Controller {
 			// 'id_gedung'		=> $this->input->post('id_gedung', true),
 			'nama_paket'		=> $this->input->post('nama_paket', true),
 			'harga_paket'	=> $this->input->post('harga_paket', true),
-			'tgl_ketersediaan'=> $this->input->post('tanggal_ketersediaan', true),		
-			'status_paket'	=> $this->input->post('status', true),
 		);
 		$save = $this->db->update('tb_paket', $data, array('id_paket' => $this->input->post('id_paket', true)));
 		if($save){

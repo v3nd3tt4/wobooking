@@ -25,14 +25,7 @@
                             <label>Harga Paket:</label>
                             <input type="number" name="harga_paket" class="form-control" required />
                         </div>
-                        <div class="form-group">
-                            <label>Tanggal ketersediaan:</label>
-                            <input type="date" name="tanggal_ketersediaan" class="form-control" required />
-                        </div>
-                        <div class="form-group">
-                            <label>Status:</label>
-                            <input type="text" name="status" class="form-control" required />
-                        </div>
+                        
                         <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Simpan</button>
                     </form>
                 </div>
