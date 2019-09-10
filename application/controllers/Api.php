@@ -3,28 +3,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Api extends CI_Controller {
 
-	/**
-	 * Index Page for this controller.
-	 *
-	 * Maps to the following URL
-	 * 		http://example.com/index.php/welcome
-	 *	- or -
-	 * 		http://example.com/index.php/welcome/index
-	 *	- or -
-	 * Since this controller is set as the default controller in
-	 * config/routes.php, it's displayed at http://example.com/
-	 *
-	 * So any other public methods not prefixed with an underscore will
-	 * map to /index.php/welcome/<method_name>
-	 * @see https://codeigniter.com/user_guide/general/urls.html
-	 */
-
 	public function __construct(){
-        parent::__construct();
+		parent::__construct();
+		$this->load->model('Model');
 	}
 
-	public function login()
-	{
+	public function login(){
 		$username = $this->input->post('email', true);
     	$password = $this->input->post('password', true);
 
@@ -55,80 +39,42 @@ class Api extends CI_Controller {
     	}
 	}
 
-	public function tambah(){
-		$data = array(
-			'page' => 'user/tambah',
-			'link' => 'user',
-			'script' => 'user/script'
+	public function kirimUser(){    
+		$nama = $this->input->post('nama', true);
+		$alamat = $this->input->post('alamat', true);
+		$email = $this->input->post('email', true);
+		$no_hp = $this->input->post('no_hp', true);
+		$password = $this->input->post('password', true);
+		$jenis_kelamin = $this->input->post('jenis_kelamin', true);
+		
+		$return = array();
+	  
+		$user = array(
+		  'nama' => $nama,
+		  'alamat' => $alamat,
+		  'jenis_kelamin' => $jenis_kelamin,
+		  'email' => $email,
+		  'no_hp' => $no_hp,
+		  'password' => password_hash($password, PASSWORD_DEFAULT),
+		  'level' => "User",
 		);
-		$this->load->view('template_srtdash/wrapper', $data);
-	}
-
-	public function signup(){
-		$data = array(
-			'nama'	=> $this->input->post('nama', true),
-			'email'	=> $this->input->post('email', true),
-			'no_hp'	=> $this->input->post('no_hp', true),
-			'alamat'	=> $this->input->post('alamat', true),
-			'password'	=> password_hash($this->input->post('password', true), PASSWORD_DEFAULT),
-			'level'=> 'user',
-			'jenis_kelamin'=> $this->input->post('jk', true),
-		);
-		$save = $this->db->insert('tb_user', $data);
-		if($save){
+		
+		$cek_user = $this->Model->ambil('email',$email,'tb_user')->row();
+		
+		
+		if(!isset($cek_user->email) OR trim($cek_user->email) == ""){
+		  $simpan_register = $this->Model->simpan_data($user, 'tb_user');      
+	
+		  if($simpan_register){
 			$return = array('status' => 'sukses', 'message' => 'Sukses mendaftar...');
 			echo json_encode($return);
-		}else{
+		  }else{
 			$return = array('status' => 'gagal', 'message' => 'Gagal mendaftar !!');
 			echo json_encode($return);
+		  }
+		}else {
+			$return = array('status' => 'gagal', 'message' => 'Email Sudah Terdaftar !!');	 
+			echo json_encode($return);
 		}
-	}
-
-	public function hapus($id){
-		$hapus = $this->db->delete('tb_user', array('id_user' => $id));
-		if($hapus){
-			echo '<script>alert("Berhasil dihapus!!");window.history.back();</script>';
-		}else{
-			echo '<script>alert("Gagal dihapus!!");window.history.back();</script>';
-		}
-	}
-
-	public function edit($id){
-		$data = array(
-			'page' => 'user/edit',
-			'link' => 'user',
-			'script' => 'user/script',
-			'data_user' => $this->db->query("select * from tb_user where id_user = '$id'")
-		);
-		$this->load->view('template_srtdash/wrapper', $data);
-	}
-
-	public function update(){
-		if($this->input->post('password', true) == ''){
-			$data = array(
-				'nama'	=> $this->input->post('nama', true),
-				'email'	=> $this->input->post('email', true),
-				'no_hp'	=> $this->input->post('no_hp', true),
-				'alamat'	=> $this->input->post('alamat', true),
-				'level'=> $this->input->post('level', true),
-				'jenis_kelamin'=> $this->input->post('jk', true),
-			);
-		}else{
-			$data = array(
-				'nama'	=> $this->input->post('nama', true),
-				'email'	=> $this->input->post('email', true),
-				'no_hp'	=> $this->input->post('no_hp', true),
-				'alamat'	=> $this->input->post('alamat', true),
-				'password'	=> password_hash($this->input->post('password', true), PASSWORD_DEFAULT),
-				'level'=> $this->input->post('level', true),
-				'jenis_kelamin'=> $this->input->post('jk', true),
-			);
-		}
-		$save = $this->db->update('tb_user', $data, array('id_user' => $this->input->post('id_user', true)));
-		if($save){
-			echo '<script>alert("Berhasil diupdate!!");window.location.href = "'.base_url().'user";</script>';
-		}else{
-			echo '<script>alert("Gagal diupdate!!");window.history.back();</script>';
-		}
-	}
+	} 
 }
