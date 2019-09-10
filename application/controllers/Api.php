@@ -111,6 +111,52 @@ class Api extends CI_Controller {
 
 	}
 
+	public function orderGedung(){
+		$data = array(
+			'id_paket'	=> $this->input->post('id_paket', true),	
+			'id_user'	=> $this->input->post('id_user', true),	
+			'jam_sewa_awal'	=> $this->input->post('jam_sewa_awal', true),	
+			'jam_sewa_akhir'	=> $this->input->post('jam_sewa_akhir', true),
+			'tanggal_sewa'	=> $this->input->post('tanggal_sewa', true),
+			'status'	=> 'active',
+		);
+		$save = $this->db->insert('tb_pesan_gedung', $data);
+		if($save){
+			$result = array(
+				'status' => 'sukses',
+				'message' => 'Transaksi berhasil dilakukan'
+			);
+			echo json_encode($result);
+		}else{
+			$result = array(
+				'status' => 'gagal',
+				'message' => 'Transaksi gagal dilakukan'
+			);
+			echo json_encode($result);
+		}
+	}
+
+	public function updatePesanGedungToExpired(){
+		$data = array(
+			'status'	=> 'expired',
+		);
+
+		$save = $this->db->update('tb_pesan_gedung', $data, array('id_pesan' => $this->input->post('id_pesan', true)));
+		if($save){
+			$result = array(
+				'status' => 'sukses',
+				'message' => 'Pemesanan gedung berhasil diupdate expired'
+			);
+			echo json_encode($result);
+		}else{
+			$result = array(
+				'status' => 'gagal',
+				'message' => 'Pemesanan gedung gagal diupdate expired'
+			);
+			echo json_encode($result);
+		}
+	}
+
 	public function addBooking(){
 
 		$config ['upload_path'] = './file_upload/';
@@ -132,15 +178,15 @@ class Api extends CI_Controller {
         	$this->upload->do_upload('gambar');
         	$upload_data = $this->upload->data();
 	        $lampiran = $upload_data['file_name'];
-	        $data = array(
+	        $data1 = array(
 				'id_user'	=> $this->input->post('id_user', true),
 				'type_file'	=> $this->input->post('type_file', true),
 				'nama_file'	=> $upload_data['file_name'],
 			);
 			
 			$this->db->trans_begin();
-			$save = $this->db->insert('tb_file_upload', $data);
-		    $data = array(
+			$save = $this->db->insert('tb_file_upload', $data1);
+		    $data2 = array(
 				'id_user'	=> $this->input->post('id_user', true),
 				'id_file_upload'	=> $this->db->insert_id(),	
 				'type_transaksi'	=> $this->input->post('type_transaksi', true);	
@@ -148,7 +194,11 @@ class Api extends CI_Controller {
 				'tanggal_bayar'	=> date('y-m-d H:i:s'),
 				'status_bayar'	=> $this->input->post('status_bayar', true),
 			);
-			$save = $this->db->insert('tb_transaksi', $data);
+			$save = $this->db->insert('tb_transaksi', $data2);
+			$data3 = array(
+				'status'	=> 'ordered',
+			);
+			$this->db->update('tb_pesan_gedung', $data3, array('id_pesan' => $this->input->post('id_pesan', true)));
 			if($this->db->trans_status() === FALSE){
 				$this->db->trans_rollback();
 				$result = array(
