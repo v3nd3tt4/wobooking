@@ -94,8 +94,15 @@ class Api extends CI_Controller {
 	}
 
 	public function paketAll(){
+		$return = array();
 		$query = $this->db->query("select * from tb_paket");
-		echo json_encode($query->result());
+		if($query->num_rows() == 0){
+			$return = array('status' => 'gagal', 'message' => 'Data tidak ada !!');	 
+			echo json_encode($return);
+		}else{
+			$return = array('status' => 'sukses', 'message' => 'Data ada...', 'listUser'=>$query->result());
+			echo json_encode($return);
+		}
 	}
 
 	public function gedungRow(){
