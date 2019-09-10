@@ -96,12 +96,37 @@ class Api extends CI_Controller {
 	public function paketRow(){
 		$return = array();
 		$id_gedung = $this->input->post('id_gedung');
-		$query = $this->db->query("select * from tb_paket left join tb_keterangan on tb_keterangan.id_paket = tb_paket.id_paket where tb_paket.id_gedung = '$id_gedung'");
+		$query = $this->db->query("select * from tb_paket where id_gedung = '$id_gedung'");
+
+		$paket = array();
+		$tot = 0;
+		foreach ($query as $key) {
+			
+			$query_ket = $this->db->query("select * from tb_keterangan where id_paket = '".$key->id_paket."'");
+			$ket_paket = array();
+			foreach ($query_ket->result() as  $value) {
+				$tot += $value->harga_ket
+				$ket_paket =array(
+					'id_keterangan' => $value->id_ket,
+					'nama_keterangan' => $value->nama_ket,
+					'harga_keterangan' => $value->harga_ket
+				);
+			}
+			$paket =array(
+				'id_paket' => $value->id_paket,
+				'nama_paket' => $value->nama_paket,
+				'tot' => $tot,
+			);
+		}
+		
+		
+
+		
 		if($query->num_rows() == 0){
 			$return = array('status' => 'gagal', 'message' => 'Data tidak ada !!');	 
 			echo json_encode($return);
 		}else{
-			$return = array('status' => 'sukses', 'message' => 'Data ada...', 'listPaket'=>$query->result());
+			$return = array('status' => 'sukses', 'message' => 'Data ada...', 'paket'=>array($paket, $ket_paket));
 			echo json_encode($return);
 		}
 	}
