@@ -100,12 +100,12 @@ class Api extends CI_Controller {
 
 		$paket = array();
 		$tot = 0;
-		foreach ($query as $key) {
+		foreach ($query->result() as $key) {
 			
 			$query_ket = $this->db->query("select * from tb_keterangan where id_paket = '".$key->id_paket."'");
 			$ket_paket = array();
 			foreach ($query_ket->result() as  $value) {
-				$tot += $value->harga_ket
+				$tot += $value->harga_ket;
 				$ket_paket =array(
 					'id_keterangan' => $value->id_ket,
 					'nama_keterangan' => $value->nama_ket,
@@ -118,9 +118,6 @@ class Api extends CI_Controller {
 				'tot' => $tot,
 			);
 		}
-		
-		
-
 		
 		if($query->num_rows() == 0){
 			$return = array('status' => 'gagal', 'message' => 'Data tidak ada !!');	 
