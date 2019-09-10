@@ -113,8 +113,8 @@ class Api extends CI_Controller {
 				);
 			}
 			$paket =array(
-				'id_paket' => $value->id_paket,
-				'nama_paket' => $value->nama_paket,
+				'id_paket' => $key->id_paket,
+				'nama_paket' => $key->nama_paket,
 				'tot' => $tot,
 			);
 		}
