@@ -81,8 +81,10 @@ class Api extends CI_Controller {
 	} 
 
 	public function gedungAll(){
+		$return = array();
 		$query = $this->db->query("select * from tb_gedung");
-		echo json_encode($query->result());
+		$return = array('status' => 'sukses', 'listUser'=>$query->result());
+		echo json_encode($return);
 	}
 
 	public function paketAll(){
