@@ -105,7 +105,6 @@ class Api extends CI_Controller {
 			$paket[$i] =array(
 				'id_paket' => $key->id_paket,
 				'nama_paket' => $key->nama_paket,
-				// 'tot' => $tot
 			);
 
 			$query_ket = $this->db->query("select * from tb_keterangan where id_paket = '".$key->id_paket."'");
@@ -125,13 +124,12 @@ class Api extends CI_Controller {
 			$i++;
 
 		}
-		// array_merge($paket, array("keterangan" => $ket_paket));
 		
 		if($query->num_rows() == 0){
 			$return = array('status' => 'gagal', 'message' => 'Data tidak ada !!');	 
 			echo json_encode($return);
 		}else{
-			$return = array('status' => 'sukses', 'message' => 'Data ada...', 'paket'=>array($paket));
+			$return = array('status' => 'sukses', 'message' => 'Data ada...', 'paket' =>$paket);
 			echo json_encode($return);
 		}
 	}
