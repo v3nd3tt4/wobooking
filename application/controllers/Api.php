@@ -122,7 +122,6 @@ class Api extends CI_Controller {
 			$paket [$i]['keterangan'] = $ket_paket;
 			$paket [$i]['tot'] = $tot;
 			$i++;
-
 		}
 		
 		if($query->num_rows() == 0){
@@ -136,20 +135,20 @@ class Api extends CI_Controller {
 
 	public function ketersediaanGedung(){
 		$firstdate = '2019-09-08 06:06:00';
-		$enddate = '2019-09-09 23:59:59';;
+		$enddate = '2019-09-09 23:59:59';
 		$id_gedung = $this->input->post('id_gedung');
 
-		$query = $this->db->query("select * from tb_pesan_gedung");
-		if($query){
+		$query = $this->db->query("SELECT * from tb_pesan_gedung where (tanggal_sewa between '$firstdate' and '$enddate') and (status = 'active' or status = 'ordered')");
+		if($query->num_rows() == 0){
 			$result = array(
 				'status' => 'sukses',
-				'message' => 'Transaksi berhasil dilakukan'
+				'message' => 'Transaksi boleh dilakukan'
 			);
 			echo json_encode($result);
 		}else{
 			$result = array(
 				'status' => 'gagal',
-				'message' => 'Transaksi gagal dilakukan'
+				'message' => 'jadwal sudah ada yang booking'
 			);
 			echo json_encode($result);
 		}
