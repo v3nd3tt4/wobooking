@@ -99,16 +99,18 @@ class Api extends CI_Controller {
 		$query = $this->db->query("select * from tb_paket where id_gedung = '$id_gedung'");
 
 		$paket = array();
-		$tot = 0;
+		$i=0;
 		foreach ($query->result() as $key) {
-			$paket =array(
+			$tot = 0;
+			$paket[$i] =array(
 				'id_paket' => $key->id_paket,
 				'nama_paket' => $key->nama_paket,
-				'tot' => $tot
+				// 'tot' => $tot
 			);
 
 			$query_ket = $this->db->query("select * from tb_keterangan where id_paket = '".$key->id_paket."'");
 			$ket_paket = array();
+
 			foreach ($query_ket->result() as  $value) {
 				$tot += $value->harga_ket;
 				$ket_paket[] =array(
@@ -117,9 +119,13 @@ class Api extends CI_Controller {
 					'harga_keterangan' => $value->harga_ket
 				);
 			}
-			$paket ['keterangan'][] = $ket_paket;
+
+			$paket [$i]['keterangan'] = $ket_paket;
+			$paket [$i]['tot'] = $tot;
+			$i++;
 
 		}
+		// array_merge($paket, array("keterangan" => $ket_paket));
 		
 		if($query->num_rows() == 0){
 			$return = array('status' => 'gagal', 'message' => 'Data tidak ada !!');	 
