@@ -269,4 +269,37 @@ class Api extends CI_Controller {
 	        }	
 	    }	
 	}
+
+	public function listTransaksi(){
+		$id_user = $this->input->post('id_user');
+		$data = array(
+			'status'	=> 'expired',
+		);
+		// $query = $this->db->query("SELECT * from tb_pesan_gedung 
+		// 	left join tb_paket on tb_paket.id_paket = tb_pesan_gedung.id_paket
+		// 	left join tb_gedung on tb_gedung.id_gedung = tb_paket.id_gedung
+		// 	where tb_pesan_gedung.id_user = '$id_user' ");
+
+		$query = $this->db->query("SELECT * from tb_pesan_gedung where id_user = '$id_user'");
+		$result = array();
+		foreach ($query->result() as $value) {
+			$query2 = $this->db->query("SELECT * from tb_paket on tb_paket.id_paket = tb_pesan_gedung.id_paket
+			left join tb_gedung on tb_gedung.id_gedung = tb_paket.id_gedung where tb_paket.id_paket = '".$value->id_paket."'");
+			$result[] = $value;
+		}
+		if($query->num_rows() != 0){
+			$result = array(
+				'status' => 'sukses',
+				'message' => 'Transaksi ditemukan',
+				'result' => $result
+			);
+			echo json_encode($result);
+		}else{
+			$result = array(
+				'status' => 'gagal',
+				'message' => 'Transaksi tidak ditemukan'
+			);
+			echo json_encode($result);
+		}
+	}
 }
