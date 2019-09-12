@@ -44,8 +44,8 @@
                             <label>Level:</label>
                             <select class="form-control" name="level" required>
                                 <option value="">--pilih--</option>
-                                <option value="admin">Admin</option>
-                                <option value="guest">Guest</option>
+                                <option value="Admin">Admin</option>
+                                <option value="Guest">Guest</option>
                             </select>
                         </div>
                         <div class="form-group">
