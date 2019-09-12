@@ -117,12 +117,12 @@ class Api extends CI_Controller {
 					'nama_keterangan' => $value->nama_ket,
 					'harga_keterangan' => 'Rp. '.number_format($value->harga_ket, 0, ',', '.')
 				));
-			}
-
+			}		
 			$paket [$i]['keterangan'] = $ket_paket;
 			$paket [$i]['tot'] = 'Rp. '.number_format($tot, 0, ',', '.');
 			$i++;
 		}
+
 		
 		if($query->num_rows() == 0){
 			$return = array('status' => 'gagal', 'message' => 'Data tidak ada !!');	 
