@@ -93,6 +93,26 @@ class Api extends CI_Controller {
 	
 	}
 
+	public function pesananPaketRow(){
+		$return = array();
+		$id_user = $this->input->post('id_user');
+		$query = $this->db->query("select tpg.*, 
+					tp.id_paket as id_paket_ori, tp.nama_paket,
+					tg.id_gedung as id_gedung_ori, tg.nama_gedung, tg.no_telp as no_telp_gedung, tg.gambar as gambar_gedung,
+					tg.alamat as alamat_gedung from tb_pesan_gedung tpg
+					inner join tb_paket tp on tp.id_paket=tpg.id_paket
+					inner join tb_gedung tg on tg.id_gedung=tp.id_gedung
+					where id_user = '$id_user'");
+		if($query->num_rows() == 0){
+			$return = array('status' => 'gagal', 'message' => 'Data tidak ada !!');	 
+			echo json_encode($return);
+		}else{
+			$return = array('status' => 'sukses', 'message' => 'Data ada...', 'listPaket'=>$query->result());
+			echo json_encode($return);
+		}
+	
+	}
+
 	public function paketRow(){
 		$return = array();
 		$id_gedung = $this->input->post('id_gedung');
