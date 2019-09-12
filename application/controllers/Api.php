@@ -163,6 +163,8 @@ class Api extends CI_Controller {
 			'jam_sewa_awal'	=> $this->input->post('jam_sewa_awal', true),	
 			'jam_sewa_akhir'	=> $this->input->post('jam_sewa_akhir', true),
 			'tanggal_sewa'	=> $this->input->post('tanggal_sewa', true),
+			'nama_pemesan'	=> $this->input->post('nama_pemesan', true),
+			'keterangan'	=> $this->input->post('keterangan', true),
 			'status'	=> 'active',
 		);
 		$save = $this->db->insert('tb_pesan_gedung', $data);
