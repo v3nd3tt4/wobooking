@@ -120,7 +120,7 @@ class Api extends CI_Controller {
 			}
 		
 			$paket [$i]['keterangan'] = $ket_paket;
-			$paket [$i]['tot'] = $tot
+			$paket [$i]['tot'] = $tot;
 			$i++;
 		}
 
