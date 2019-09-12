@@ -168,6 +168,7 @@ class Api extends CI_Controller {
 
 	}
 
+	//mem booking gedung sebelum bayar apa-apa
 	public function orderGedung(){
 		$data = array(
 			'id_paket'	=> $this->input->post('id_paket', true),	
@@ -195,6 +196,7 @@ class Api extends CI_Controller {
 		}
 	}
 
+	//mengedit orderan menjadi expired
 	public function updatePesanGedungToExpired(){
 		$data = array(
 			'status'	=> 'expired',
@@ -216,6 +218,7 @@ class Api extends CI_Controller {
 		}
 	}
 
+	//upload bukti bayar
 	public function addBooking(){
 		$firstdate = $this->input->post('firstdate', true);
 		$enddate = $this->input->post('enddate', true);
