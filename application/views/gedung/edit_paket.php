@@ -26,14 +26,7 @@
                             <label>Harga Paket:</label>
                             <input type="number" value="<?=$data_paket->row()->harga_paket?>" name="harga_paket" class="form-control" required />
                         </div>
-                        <div class="form-group">
-                            <label>Tanggal ketersediaan:</label>
-                            <input type="date" value="<?=$data_paket->row()->tgl_ketersediaan?>" name="tanggal_ketersediaan" class="form-control" required />
-                        </div>
-                        <div class="form-group">
-                            <label>Status:</label>
-                            <input type="text" name="status" value="<?=$data_paket->row()->status_paket?>" class="form-control" required />
-                        </div>
+
                         <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Simpan</button>
                     </form>
                 </div>

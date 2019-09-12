@@ -165,18 +165,30 @@ class Gedung extends CI_Controller {
 	}
 
 	public function store_paket(){
+		$this->db->trans_begin();
+
 		$data = array(
 			'id_gedung'		=> $this->input->post('id_gedung', true),
 			'nama_paket'		=> $this->input->post('nama_paket', true),
-			'harga_paket'	=> $this->input->post('harga_paket', true),
-			'tgl_ketersediaan'=> $this->input->post('tanggal_ketersediaan', true),		
-			'status_paket'	=> $this->input->post('status', true),
+			// 'harga_paket'	=> $this->input->post('harga_paket', true),
 		);
 		$save = $this->db->insert('tb_paket', $data);
-		if($save){
-			echo '<script>alert("Berhasil disimpan!!");window.location.href = "'.base_url().'gedung/paket/'.$this->input->post('id_gedung', true).'";</script>';
-		}else{
+		$data2 = array();
+		for($i=0;$i<count($this->input->post('keterangan_r', true));$i++){
+			$data2[] = array(
+				'nama_ket' => $this->input->post('keterangan_r', true)[$i],
+				'harga_ket' => $this->input->post('harga_keterangan_r', true)[$i],
+				'id_paket' =>  $this->db->insert_id()
+			);
+		}
+		$this->db->insert_batch('tb_keterangan', $data2);
+		
+		if($this->db->trans_status() === FALSE){
+			$this->db->trans_rollback();
 			echo '<script>alert("Gagal disimpan!!");window.history.back();</script>';
+		}else{
+			$this->db->trans_commit();
+			echo '<script>alert("Berhasil disimpan!!");window.location.href = "'.base_url().'gedung/paket/'.$this->input->post('id_gedung', true).'";</script>';
 		}
 	}
 
@@ -197,8 +209,6 @@ class Gedung extends CI_Controller {
 			// 'id_gedung'		=> $this->input->post('id_gedung', true),
 			'nama_paket'		=> $this->input->post('nama_paket', true),
 			'harga_paket'	=> $this->input->post('harga_paket', true),
-			'tgl_ketersediaan'=> $this->input->post('tanggal_ketersediaan', true),		
-			'status_paket'	=> $this->input->post('status', true),
 		);
 		$save = $this->db->update('tb_paket', $data, array('id_paket' => $this->input->post('id_paket', true)));
 		if($save){
@@ -210,6 +220,7 @@ class Gedung extends CI_Controller {
 
 	public function hapus_paket($id){
 		$hapus = $this->db->delete('tb_paket', array('id_paket' => $id));
+		$hapus = $this->db->delete('tb_keterangan', array('id_paket' => $id));
 		if($hapus){
 			echo '<script>alert("Berhasil dihapus!!");window.history.back();</script>';
 		}else{

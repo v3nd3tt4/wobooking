@@ -81,50 +81,95 @@ class Api extends CI_Controller {
 	} 
 
 	public function gedungAll(){
+		$return = array();
 		$query = $this->db->query("select * from tb_gedung");
-		echo json_encode($query->result());
+		if($query->num_rows() == 0){
+			$return = array('status' => 'gagal', 'message' => 'Data tidak ada !!');	 
+			echo json_encode($return);
+		}else{
+			$return = array('status' => 'sukses', 'message' => 'Data ada...', 'listGedung'=>$query->result());
+			echo json_encode($return);
+		}
+	
 	}
 
-	public function paketAll(){
-		$query = $this->db->query("select * from tb_paket");
-		echo json_encode($query->result());
-	}
-
-	public function gedungRow(){
-		$id_gedung = $this->input->post('id_gedung');
-		$query = $this->db->query("select * from tb_gedung where id_gedung = '$id_gedung'");
-		echo json_encode($query->row());
+	public function pesananPaketRow(){
+		$return = array();
+		$id_user = $this->input->post('id_user');
+		$query = $this->db->query("select tpg.*, 
+					tp.id_paket as id_paket_ori, tp.nama_paket,
+					tg.id_gedung as id_gedung_ori, tg.nama_gedung, tg.no_telp as no_telp_gedung, tg.gambar as gambar_gedung,
+					tg.alamat as alamat_gedung from tb_pesan_gedung tpg
+					inner join tb_paket tp on tp.id_paket=tpg.id_paket
+					inner join tb_gedung tg on tg.id_gedung=tp.id_gedung
+					where id_user = '$id_user'");
+		if($query->num_rows() == 0){
+			$return = array('status' => 'gagal', 'message' => 'Data tidak ada !!');	 
+			echo json_encode($return);
+		}else{
+			$return = array('status' => 'sukses', 'message' => 'Data ada...', 'listPaket'=>$query->result());
+			echo json_encode($return);
+		}
+	
 	}
 
 	public function paketRow(){
-		$id_paket = $this->input->post('id_paket');
-		$query = $this->db->query("select * from tb_paket where id_paket = '$id_paket'");
-		echo json_encode($query->row());
-	}
+		$return = array();
+		$id_gedung = $this->input->post('id_gedung');
+		$query = $this->db->query("select * from tb_paket where id_gedung = '$id_gedung'");
 
-	public function paketResult(){
-		$id_paket = $this->input->post('id_paket');
-		$query = $this->db->query("select * from tb_paket where id_paket = '$id_paket'");
-		echo json_encode($query->result());
-	}
+		$paket = array();
+		$i=0;
+		foreach ($query->result() as $key) {
+			$tot = 0;
+			$paket[$i] =array(
+				'id_paket' => $key->id_paket,
+				'nama_paket' => $key->nama_paket,
+			);
 
+			$query_ket = $this->db->query("select * from tb_keterangan where id_paket = '".$key->id_paket."'");
+			$ket_paket = array();
+
+			foreach ($query_ket->result() as  $value) {
+				$tot += $value->harga_ket;
+				array_push($ket_paket,array(
+					'id_keterangan' => $value->id_ket,
+					'nama_keterangan' => $value->nama_ket,
+					'harga_keterangan' => $value->harga_ket,
+				));
+			}
+		
+			$paket [$i]['keterangan'] = $ket_paket;
+			$paket [$i]['tot'] = $tot;
+			$i++;
+		}
+
+		
+		if($query->num_rows() == 0){
+			$return = array('status' => 'gagal', 'message' => 'Data tidak ada !!');	 
+			echo json_encode($return);
+		}else{
+			$return = array('status' => 'sukses', 'message' => 'Data ada...', 'paket' =>$paket);
+			echo json_encode($return);
+		}
+	}
 
 	public function ketersediaanGedung(){
 		$firstdate = '2019-09-08 06:06:00';
-		$enddate = '2019-09-09 23:59:59';;
+		$enddate = '2019-09-09 23:59:59';
 		$id_gedung = $this->input->post('id_gedung');
 
-		$query = $this->db->query("select * from tb_pesan_gedung")
-		if($query){
+		$query = $this->db->query("SELECT * from tb_pesan_gedung where (tanggal_sewa between '$firstdate' and '$enddate') and (status = 'active' or status = 'ordered')");
+		if($query->num_rows() == 0){
 			$result = array(
 				'status' => 'sukses',
-				'message' => 'Transaksi berhasil dilakukan'
+				'message' => 'Transaksi boleh dilakukan'
 			);
 			echo json_encode($result);
 		}else{
 			$result = array(
 				'status' => 'gagal',
-				'message' => 'Transaksi gagal dilakukan'
+				'message' => 'jadwal sudah ada yang booking'
 			);
 			echo json_encode($result);
 		}
@@ -138,6 +183,8 @@ class Api extends CI_Controller {
 			'jam_sewa_awal'	=> $this->input->post('jam_sewa_awal', true),	
 			'jam_sewa_akhir'	=> $this->input->post('jam_sewa_akhir', true),
 			'tanggal_sewa'	=> $this->input->post('tanggal_sewa', true),
+			'nama_pemesan'	=> $this->input->post('nama_pemesan', true),
+			'keterangan'	=> $this->input->post('keterangan', true),
 			'status'	=> 'active',
 		);
 		$save = $this->db->insert('tb_pesan_gedung', $data);
@@ -244,5 +291,38 @@ class Api extends CI_Controller {
 				}
 	        }	
 	    }	
+	}
+
+	public function listTransaksi(){
+		$id_user = $this->input->post('id_user');
+		$data = array(
+			'status'	=> 'expired',
+		);
+		// $query = $this->db->query("SELECT * from tb_pesan_gedung 
+		// 	left join tb_paket on tb_paket.id_paket = tb_pesan_gedung.id_paket
+		// 	left join tb_gedung on tb_gedung.id_gedung = tb_paket.id_gedung
+		// 	where tb_pesan_gedung.id_user = '$id_user' ");
+
+		$query = $this->db->query("SELECT * from tb_pesan_gedung where id_user = '$id_user'");
+		$result = array();
+		foreach ($query->result() as $value) {
+			$query2 = $this->db->query("SELECT * from tb_paket on tb_paket.id_paket = tb_pesan_gedung.id_paket
+			left join tb_gedung on tb_gedung.id_gedung = tb_paket.id_gedung where tb_paket.id_paket = '".$value->id_paket."'");
+			$result[] = $value;
+		}
+		if($query->num_rows() != 0){
+			$result = array(
+				'status' => 'sukses',
+				'message' => 'Transaksi ditemukan',
+				'result' => $result
+			);
+			echo json_encode($result);
+		}else{
+			$result = array(
+				'status' => 'gagal',
+				'message' => 'Transaksi tidak ditemukan'
+			);
+			echo json_encode($result);
+		}
 	}
 }

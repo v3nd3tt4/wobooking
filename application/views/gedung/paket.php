@@ -48,7 +48,6 @@
                                     <th>No</th>
                                     <th>Nama Paket</th>
                                     <th>Harga Paket</th>
-                                    <th>Status</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -57,11 +56,25 @@
                                     <tr>
                                         <td><?=$no?>.</td>
                                         <td><?=$row_paket->nama_paket?></td>
-                                        <td><?=$row_paket->harga_paket?></td>
-                                         <td><?=$row_paket->status_paket?></td>
+                                        <td>
+                                            <table class="table">
+                                            <?php 
+                                                $query = $this->db->query("select * from tb_keterangan where id_paket = '".$row_paket->id_paket."'");
+                                                $tot=0;
+                                                foreach ($query->result() as $value) {
+                                                    echo '<tr><td>'.$value->nama_ket.'</td> <td align="right">Rp. '.number_format($value->harga_ket, 0, ',', '.').'</td></tr>';
+                                                    $tot += $value->harga_ket;
+                                                }
+                                            ?>
+                                                <tr>
+                                                    <td>Total</td>
+                                                    <td align="right">Rp. <?=number_format($tot, 0, ',', '.')?></td>
+                                                </tr>
+                                            </table>
+                                        </td>
                                         <th>
                                             <a href="<?=base_url()?>gedung/hapus_paket/<?=$row_paket->id_paket?>" onclick="return confirm('are you sure?')" class="btn btn-xs btn-danger" ><i class="fa fa-remove"></i> Hapus</a>
-                                            <a href="<?=base_url()?>gedung/edit_paket/<?=$row_paket->id_gedung?>/<?=$row_paket->id_paket?>" class="btn btn-xs btn-success" onclick="if(!confirm(\'Anda yakin mengedit data ini?\')) return false;"><i class="fa fa-pencil"></i> Edit</a>
+                                            <!-- <a href="<?=base_url()?>gedung/edit_paket/<?=$row_paket->id_gedung?>/<?=$row_paket->id_paket?>" class="btn btn-xs btn-success" onclick="if(!confirm(\'Anda yakin mengedit data ini?\')) return false;"><i class="fa fa-pencil"></i> Edit</a> -->
                                         </th>
                                     </tr>
                                 <?php $no++;}?>
