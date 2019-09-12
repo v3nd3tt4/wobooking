@@ -298,6 +298,7 @@ class Api extends CI_Controller {
 		}
 	}
 
+	//list transaksi
 	public function listTransaksi(){
 		$id_user = $this->input->post('id_user');
 		$data = array(
