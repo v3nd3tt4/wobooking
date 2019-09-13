@@ -327,7 +327,7 @@ class Api extends CI_Controller {
 			left join tb_gedung on tb_gedung.id_gedung = tb_paket.id_gedung
 			 where tb_paket.id_paket = '".$value->id_paket."'");
 
-			$result[] = $value;
+			$result[] = $query2->result();
 		}
 		if($query->num_rows() != 0){
 			$result = array(
