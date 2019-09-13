@@ -261,7 +261,8 @@ class Api extends CI_Controller {
 						'message' => $this->upload->display_errors()
 					);
 					echo json_encode($result);
-		            die();
+					die();
+					
 		        }else{
 		        	$this->upload->do_upload('gambar');
 		        	$upload_data = $this->upload->data();
