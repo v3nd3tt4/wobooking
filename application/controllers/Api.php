@@ -154,12 +154,10 @@ class Api extends CI_Controller {
 		}
 	}
 
-	public function ketersediaanGedung($firstdate, $enddate){
-		// $firstdate = '2019-09-08 06:06:00';
-		// $enddate = '2019-09-09 23:59:59';
+	public function ketersediaanGedung($firstdate){
 		$id_gedung = $this->input->post('id_gedung');
 
-		$query = $this->db->query("SELECT * from tb_pesan_gedung where (tanggal_sewa between '$firstdate' and '$enddate') and (status = 'active' or status = 'ordered')");
+		$query = $this->db->query("SELECT * from tb_pesan_gedung where tanggal_sewa='$firstdate' and (status = 'active' or status = 'ordered')");
 		if($query->num_rows() == 0){
 			return true;
 		}else{
@@ -170,30 +168,41 @@ class Api extends CI_Controller {
 
 	//mem booking gedung sebelum bayar apa-apa
 	public function orderGedung(){
-		$data = array(
-			'id_paket'	=> $this->input->post('id_paket', true),	
-			'id_user'	=> $this->input->post('id_user', true),	
-			'jam_sewa_awal'	=> $this->input->post('jam_sewa_awal', true),	
-			'jam_sewa_akhir'	=> $this->input->post('jam_sewa_akhir', true),
-			'tanggal_sewa'	=> $this->input->post('tanggal_sewa', true),
-			'nama_pemesan'	=> $this->input->post('nama_pemesan', true),
-			'keterangan'	=> $this->input->post('keterangan', true),
-			'status'	=> 'pending',
-		);
-		$save = $this->db->insert('tb_pesan_gedung', $data);
-		if($save){
-			$result = array(
-				'status' => 'sukses',
-				'message' => 'Transaksi berhasil dilakukan'
-			);
-			echo json_encode($result);
-		}else{
+		$firstdate = $this->input->post('firstdate', true);
+		if(!$this->ketersediaanGedung($firstdate)){
 			$result = array(
 				'status' => 'gagal',
-				'message' => 'Transaksi gagal dilakukan'
+				'message' => 'gedung tidak tersedia'
 			);
 			echo json_encode($result);
+            die();
+		}else{
+			$data = array(
+				'id_paket'	=> $this->input->post('id_paket', true),	
+				'id_user'	=> $this->input->post('id_user', true),	
+				'jam_sewa_awal'	=> $this->input->post('jam_sewa_awal', true),	
+				'jam_sewa_akhir'	=> $this->input->post('jam_sewa_akhir', true),
+				'tanggal_sewa'	=> $this->input->post('tanggal_sewa', true),
+				'nama_pemesan'	=> $this->input->post('nama_pemesan', true),
+				'keterangan'	=> $this->input->post('keterangan', true),
+				'status'	=> 'pending',
+			);
+			$save = $this->db->insert('tb_pesan_gedung', $data);
+			if($save){
+				$result = array(
+					'status' => 'sukses',
+					'message' => 'Transaksi berhasil dilakukan'
+				);
+				echo json_encode($result);
+			}else{
+				$result = array(
+					'status' => 'gagal',
+					'message' => 'Transaksi gagal dilakukan'
+				);
+				echo json_encode($result);
+			}
 		}
+		
 	}
 
 	//mengedit orderan menjadi expired
@@ -221,8 +230,7 @@ class Api extends CI_Controller {
 	//upload bukti bayar
 	public function addBooking(){
 		$firstdate = $this->input->post('firstdate', true);
-		$enddate = $this->input->post('enddate', true);
-		if(!$this->ketersediaanGedung($firstdate, $enddate)){
+		if(!$this->ketersediaanGedung($firstdate)){
 			$result = array(
 				'status' => 'gagal',
 				'message' => 'gedung tidak tersedia'
@@ -272,6 +280,7 @@ class Api extends CI_Controller {
 						'jumlah_bayar'	=> $this->input->post('jumlah_bayar', true),	
 						'tanggal_bayar'	=> date('y-m-d H:i:s'),
 						'status_bayar'	=> $this->input->post('status_bayar', true),
+						'id_pesan_gedung'	=> $this->input->post('id_pesan_gedung', true),
 					);
 					$save = $this->db->insert('tb_transaksi', $data2);
 					$data3 = array(
@@ -304,11 +313,6 @@ class Api extends CI_Controller {
 		$data = array(
 			'status'	=> 'expired',
 		);
-		// $query = $this->db->query("SELECT * from tb_pesan_gedung 
-		// 	left join tb_paket on tb_paket.id_paket = tb_pesan_gedung.id_paket
-		// 	left join tb_gedung on tb_gedung.id_gedung = tb_paket.id_gedung
-		// 	where tb_pesan_gedung.id_user = '$id_user' ");
-
 		$query = $this->db->query("SELECT * from tb_pesan_gedung where id_user = '$id_user'");
 		$result = array();
 		foreach ($query->result() as $value) {
