@@ -320,13 +320,13 @@ class Api extends CI_Controller {
 		$query = $this->db->query("SELECT * from tb_pesan_gedung where id_user = '$id_user'");
 		$result = array();
 		foreach ($query->result() as $value) {
-			$query2 = $this->db->query("SELECT tp_paket.id_paket, tp_paket.nama_paket, tb_pesan_gedung.jam_sewa_awal,
+			$query2 = $this->db->query("SELECT tb_paket.id_paket, tb_paket.nama_paket, tb_pesan_gedung.jam_sewa_awal,
 			tb_pesan_gedung.jam_sewa_akhir, tb_pesan_gedung.tanggal_sewa, tb_pesan_gedung.status, 
 			tb_pesan_gedung.nama_pemesan, tb_pesan_gedung.keterangan, tb_gedung.nama_gedung from tb_paket 
 			left join tb_pesan_gedung on tb_pesan_gedung.id_paket=tb_paket.id_paket
 			left join tb_gedung on tb_gedung.id_gedung = tb_paket.id_gedung
 			 where tb_paket.id_paket = '".$value->id_paket."'");
-			 
+
 			$result[] = $value;
 		}
 		if($query->num_rows() != 0){
