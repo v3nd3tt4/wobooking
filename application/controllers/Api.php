@@ -156,7 +156,6 @@ class Api extends CI_Controller {
 
 	public function ketersediaanGedung($firstdate,$id_gedung){
 		$id_gedung = $this->input->post('id_gedung');
-
 		$query = $this->db->query("SELECT * from tb_pesan_gedung tpg
 		inner join tb_paket tp on tp.id_paket=tpg.id_paket
 		inner join tb_gedung tg on tg.id_gedung=tp.id_gedung
@@ -321,8 +320,10 @@ class Api extends CI_Controller {
 		$query = $this->db->query("SELECT * from tb_pesan_gedung where id_user = '$id_user'");
 		$result = array();
 		foreach ($query->result() as $value) {
-			$query2 = $this->db->query("SELECT * from tb_paket on tb_paket.id_paket = tb_pesan_gedung.id_paket
-			left join tb_gedung on tb_gedung.id_gedung = tb_paket.id_gedung where tb_paket.id_paket = '".$value->id_paket."'");
+			$query2 = $this->db->query("SELECT * from tb_paket 
+			left join tb_pesan_gedung on tb_pesan_gedung.id_paket=tb_paket.id_paket
+			left join tb_gedung on tb_gedung.id_gedung = tb_paket.id_gedung
+			 where tb_paket.id_paket = '".$value->id_paket."'");
 			$result[] = $value;
 		}
 		if($query->num_rows() != 0){
