@@ -168,7 +168,7 @@ class Api extends CI_Controller {
 
 	//mem booking gedung sebelum bayar apa-apa
 	public function orderGedung(){
-		$firstdate = $this->input->post('firstdate', true);
+		$firstdate = $this->input->post('tanggal_sewa', true);
 		if(!$this->ketersediaanGedung($firstdate)){
 			$result = array(
 				'status' => 'gagal',
@@ -182,7 +182,7 @@ class Api extends CI_Controller {
 				'id_user'	=> $this->input->post('id_user', true),	
 				'jam_sewa_awal'	=> $this->input->post('jam_sewa_awal', true),	
 				'jam_sewa_akhir'	=> $this->input->post('jam_sewa_akhir', true),
-				'tanggal_sewa'	=> $this->input->post('tanggal_sewa', true),
+				'tanggal_sewa'	=> $firstdate,
 				'nama_pemesan'	=> $this->input->post('nama_pemesan', true),
 				'keterangan'	=> $this->input->post('keterangan', true),
 				'status'	=> 'pending',
