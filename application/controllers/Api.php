@@ -363,4 +363,25 @@ class Api extends CI_Controller {
 			echo json_encode($result);
 		}
 	}
+
+	public function listFile(){
+		$id_user = $this->input->post('id_user', true);
+		$id_pesan_gedung = $this->input->post('id_pesan_gedung', true);
+		$query = $this->db->query("select * from tb_transaksi left join tb_file_upload on tb_file_upload.id_file_upload = tb_transaksi.id_file_upload where id_user = '$id_user' and id_pesan_gedung='$id_pesan_gedung'");
+		if($query->num_rows() > 0){
+			$result = array(
+				'status' => 'sukses',
+				'message' => 'File ditemukan',
+				'result' => $query->result()
+			);
+			echo json_encode($result);
+		}else{
+			$result = array(
+				'status' => 'gagal',
+				'message' => 'File tidak ditemukan'
+			);
+			echo json_encode($result);
+		}
+
+	}
 }
