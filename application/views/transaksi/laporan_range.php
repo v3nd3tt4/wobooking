@@ -27,7 +27,7 @@
                             </tr>
                         </table>
                         <br/><br/>
-                        <button class="btn btn-success" onclick="printData()"><i class="fa fa-print"></i> Cetak</button><br/><br/>
+                        <!-- <button class="btn btn-success" onclick="printData()"><i class="fa fa-print"></i> Cetak</button><br/><br/> -->
                         <table class="table table-striped" id="printTable">
                             <thead>
                                 <tr>

@@ -1,6 +1,6 @@
 <div class="main-content-inner">
     <!-- sales report area start -->
-    
+
     <div class="sales-report-area mt-5 mb-5">
         
     </div>
@@ -24,7 +24,8 @@
                             <label>Sampai:</label>
                             <input type="date" class="form-control" name="end_date" required>
                         </div>
-                        <button type="submit" class="btn btn-danger">Cek</button>
+                        <button type="submit" name="submit" class="btn btn-danger" value="cek">Cek</button>
+                        <button type="submit" name="submit" class="btn btn-primary" value="cetak">Cetak</button>
                     </form>
                 </div>
             </div>
