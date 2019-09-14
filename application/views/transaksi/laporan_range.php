@@ -72,7 +72,17 @@
                                         <td><?=$row->status?></td>
                                         <td>Rp. <?=number_format($tot, 0, ',', '.')?></td>
                                         <td>Rp. <?=@number_format($tot2, 0, ',', '.')?></td>
-                                        <td><?=$row->status_pembayaran?></td>
+                                        <td>
+                                            <?php 
+                                                if($row->status_pembayaran == 'Sudah Lunas'){
+                                                    $cl = 'btn-success';
+                                                }else{
+                                                    $cl = 'btn-danger';
+                                                }
+                                            ?>
+                                            
+                                            <button class="btn btn-sm <?=$cl?>"><?=$row->status_pembayaran?></button>
+                                        </td>
                                     </tr>
                                 <?php }?>
                             </tbody>
