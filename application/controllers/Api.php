@@ -317,7 +317,7 @@ class Api extends CI_Controller {
 		$data = array(
 			'status'	=> 'expired',
 		);
-		$query = $this->db->query("SELECT * from tb_pesan_gedung where id_user = '$id_user' DATE_ADD(NOW(), INTERVAL 2 HOUR) < waktu_pesan");
+		$query = $this->db->query("SELECT * from tb_pesan_gedung where id_user = '$id_user' and DATE_ADD(NOW(), INTERVAL 2 HOUR) < waktu_pesan");
 		$result = array();
 		foreach ($query->result() as $value) {
 			$biaya =0;
