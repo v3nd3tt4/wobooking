@@ -46,7 +46,7 @@
                             <select class="form-control" name="level" required>
                                 <option value="">--pilih--</option>
                                 <option value="Admin" <?=$data_user->row()->level == 'Admin'? 'selected':''?>>Admin</option>
-                                <option value="User" <?=$data_user->row()->level == 'User'? 'selected':''?>>Guest</option>
+                                <option value="User" <?=$data_user->row()->level == 'User'? 'selected':''?>>User</option>
                             </select>
                         </div>
                         <div class="form-group">

@@ -36,8 +36,8 @@
                             <label>Jenis Kelamin:</label>
                             <select class="form-control" name="jk" required>
                                 <option value="">--pilih--</option>
-                                <option value="Laki-Laki">Pria</option>
-                                <option value="Perempuan">Wanita</option>
+                                <option value="Laki-Laki">Laki-Laki</option>
+                                <option value="Perempuan">Perempuan</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -45,7 +45,7 @@
                             <select class="form-control" name="level" required>
                                 <option value="">--pilih--</option>
                                 <option value="Admin">Admin</option>
-                                <option value="User">Guest</option>
+                                <option value="User">User</option>
                             </select>
                         </div>
                         <div class="form-group">
