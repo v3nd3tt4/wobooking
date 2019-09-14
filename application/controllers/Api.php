@@ -324,8 +324,9 @@ class Api extends CI_Controller {
 		$data = array(
 			'status'	=> 'expired',
 		);
-		$query = $this->db->query("SELECT * from tb_pesan_gedung where id_user = '$id_user' 
-		and DATE_ADD(NOW(), INTERVAL 2 HOUR) < waktu_pesan");
+		$query = $this->db->query("SELECT * from tb_pesan_gedung where id_user = '$id_user' and DATE_ADD(NOW(), INTERVAL 2 HOUR) < waktu_pesan");
+		// $query = $this->db->query("SELECT * from tb_pesan_gedung where (now() > DATE_ADD(waktu_pesan, INTERVAL 2 HOUR)) and status = 'pending'");
+
 		$result = array();
 		$i=0;
 		// var_dump($query->result());exit();
