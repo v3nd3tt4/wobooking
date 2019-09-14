@@ -17,5 +17,4 @@ results = db.select('SELECT * from tb_pesan_gedung where (DATE_ADD(NOW(), INTERV
 
 # print results
 for r in results:
-	db.table('tb_pesan_gedung').where('id_pesan', 2).update(status='expired')
-	
+	db.table('tb_pesan_gedung').where('id_pesan', r['id_pesan']).update(status='expired')
