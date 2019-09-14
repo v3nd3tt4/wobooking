@@ -338,11 +338,21 @@ class Api extends CI_Controller {
 
 			foreach ($query_ket->result() as  $value) {
 				$tot += $value->harga_ket;
+				$result[$i] = array(
+					'id_paket' => $value->id_paket
+					'nama_paket' =>  $value->nama_paket,
+					'id_pesan' => $value->id_pesan,
+					'jam_sewa_awal'=>$value->jam_sewa_awal,
+					'jam_sewa_akhir'=> $value->jam_sewa_akhir,
+					'tanggal_sewa'=>$value->tanggal_sewa,
+					'status'=> $value->status,
+					'nama_pemesan'=> $value->nama_pemesan,
+					'keterangan'=> $value->keterangan,
+					'nama_gedung'=> $value->nama_gedung,
+					'waktu_pesan'=> $value->waktu_pesan,
+					'total' => $tot
+				);
 			}
-
-
-			$result = $query2->result();
-			$result[$i]['total'] = $tot;
 		}
 		if($query->num_rows() != 0){
 			$result = array(
