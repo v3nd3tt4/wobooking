@@ -321,7 +321,7 @@ class Api extends CI_Controller {
 		and DATE_ADD(NOW(), INTERVAL 2 HOUR) < waktu_pesan");
 		$result = array();
 		$i=0;
-		var_dump($query->result());exit();
+		// var_dump($query->result());exit();
 		foreach ($query->result() as $value) {
 			$tot =0;
 			$query2 = $this->db->query("SELECT tb_paket.id_paket, tb_paket.nama_paket, tb_pesan_gedung.id_pesan,
