@@ -251,70 +251,71 @@ class Api extends CI_Controller {
 				echo json_encode($result);
 				die();
 			}
-		}else{
-			$query = $this->db->query("select * from tb_transaksi
-			where id_pesan_gedung='".$this->input->post('id_pesan_gedung', true)."' and type_transaksi = '".$this->input->post('type_transaksi', true)."'");
+		}
 
-			if($query->num_rows() != 0){
+		$query = $this->db->query("select * from tb_transaksi
+		where id_pesan_gedung='".$this->input->post('id_pesan_gedung', true)."' and type_transaksi = '".$this->input->post('type_transaksi', true)."'");
+
+		if($query->num_rows() != 0){
+			$result = array(
+				'status' => 'gagal',
+				'message' => 'anda sudah mengupload bukti pembayaran '.$this->input->post('type_transaksi', true)
+			);
+			echo json_encode($result);
+			die();
+		}else{
+			if(!$this->upload->do_upload('gambar')){
 				$result = array(
 					'status' => 'gagal',
-					'message' => 'anda sudah mengupload bukti pembayaran '.$this->input->post('type_transaksi', true)
+					'message' => $this->upload->display_errors()
 				);
 				echo json_encode($result);
 				die();
+				
 			}else{
-				if(!$this->upload->do_upload('gambar')){
+				$this->upload->do_upload('gambar');
+				$upload_data = $this->upload->data();
+				$lampiran = $upload_data['file_name'];
+				$data1 = array(
+					'id_user'	=> $this->input->post('id_user', true),
+					'nama_file'	=> $upload_data['file_name'],
+				);
+				
+				$this->db->trans_begin();
+				$save = $this->db->insert('tb_file_upload', $data1);
+				$data2 = array(
+					'id_user'	=> $this->input->post('id_user', true),
+					'id_file_upload'	=> $this->db->insert_id(),	
+					'type_transaksi'	=> $this->input->post('type_transaksi', true),	
+					'jumlah_bayar'	=> $this->input->post('jumlah_bayar', true),	
+					'tanggal_bayar'	=> date('y-m-d H:i:s'),
+					'status_bayar'	=> $this->input->post('type_transaksi', true) == 'DP' ? 'DP Telah Dibayar' : 'Telah Melakukan Pelunasan',
+					'id_pesan_gedung'	=> $this->input->post('id_pesan_gedung', true),
+				);
+				$save = $this->db->insert('tb_transaksi', $data2);
+				$data3 = array(
+					'status'	=> 'ordered',
+					'status_pembayaran' => $this->input->post('type_transaksi', true) == 'DP' ? 'Belum Lunas' : 'Sudah Lunas'
+				);
+				$this->db->update('tb_pesan_gedung', $data3, array('id_pesan' => $this->input->post('id_pesan_gedung', true)));
+				if($this->db->trans_status() === FALSE){
+					$this->db->trans_rollback();
 					$result = array(
 						'status' => 'gagal',
-						'message' => $this->upload->display_errors()
+						'message' => 'Transaksi gagal dilakukan'
 					);
 					echo json_encode($result);
-					die();
-					
 				}else{
-					$this->upload->do_upload('gambar');
-					$upload_data = $this->upload->data();
-					$lampiran = $upload_data['file_name'];
-					$data1 = array(
-						'id_user'	=> $this->input->post('id_user', true),
-						'nama_file'	=> $upload_data['file_name'],
+					$this->db->trans_commit();
+					$result = array(
+						'status' => 'sukses',
+						'message' => 'Transaksi berhasil dilakukan'
 					);
-					
-					$this->db->trans_begin();
-					$save = $this->db->insert('tb_file_upload', $data1);
-					$data2 = array(
-						'id_user'	=> $this->input->post('id_user', true),
-						'id_file_upload'	=> $this->db->insert_id(),	
-						'type_transaksi'	=> $this->input->post('type_transaksi', true),	
-						'jumlah_bayar'	=> $this->input->post('jumlah_bayar', true),	
-						'tanggal_bayar'	=> date('y-m-d H:i:s'),
-						'status_bayar'	=> $this->input->post('type_transaksi', true) == 'DP' ? 'DP Telah Dibayar' : 'Telah Melakukan Pelunasan',
-						'id_pesan_gedung'	=> $this->input->post('id_pesan_gedung', true),
-					);
-					$save = $this->db->insert('tb_transaksi', $data2);
-					$data3 = array(
-						'status'	=> 'ordered',
-						'status_pembayaran' => $this->input->post('type_transaksi', true) == 'DP' ? 'Belum Lunas' : 'Sudah Lunas'
-					);
-					$this->db->update('tb_pesan_gedung', $data3, array('id_pesan' => $this->input->post('id_pesan_gedung', true)));
-					if($this->db->trans_status() === FALSE){
-						$this->db->trans_rollback();
-						$result = array(
-							'status' => 'gagal',
-							'message' => 'Transaksi gagal dilakukan'
-						);
-						echo json_encode($result);
-					}else{
-						$this->db->trans_commit();
-						$result = array(
-							'status' => 'sukses',
-							'message' => 'Transaksi berhasil dilakukan'
-						);
-						echo json_encode($result);
-					}
-				}	
+					echo json_encode($result);
+				}
 			}	
 		}	
+			
 	}
 
 	//list transaksi
