@@ -408,4 +408,72 @@ class Api extends CI_Controller {
 		}
 
 	}
+
+	public function listTransaksiByDate(){
+		$firstdate = $this->input->post('firstdate', true);
+		$enddate = $this->input->post('enddate', true);
+		$id_user = $this->input->post('id_user');
+		$data = array(
+			'status'	=> 'expired',
+		);
+		$query = $this->db->query("SELECT * from tb_pesan_gedung where id_user = '$id_user' 
+		and (DATE_ADD(NOW(), INTERVAL 2 HOUR) < waktu_pesan) and (waktu_pesan between ('$firstdate' and '$enddate'))");
+		$result = array();
+		$i=0;
+		// var_dump($query->result());exit();
+		foreach ($query->result() as $value) {
+			$tot =0;
+			$query2 = $this->db->query("SELECT tb_paket.id_paket, tb_paket.nama_paket, tb_pesan_gedung.id_pesan,
+			tb_pesan_gedung.jam_sewa_awal, tb_gedung.gambar,
+			tb_pesan_gedung.jam_sewa_akhir, tb_pesan_gedung.tanggal_sewa, tb_pesan_gedung.status, 
+			tb_pesan_gedung.nama_pemesan, tb_pesan_gedung.keterangan, tb_gedung.nama_gedung, tb_pesan_gedung.waktu_pesan, tb_pesan_gedung.status_pembayaran 
+			from tb_paket 
+			left join tb_pesan_gedung on tb_pesan_gedung.id_paket=tb_paket.id_paket
+			left join tb_gedung on tb_gedung.id_gedung = tb_paket.id_gedung
+			 where tb_paket.id_paket = '".$value->id_paket."'
+			 and  DATE_ADD(NOW(), INTERVAL 2 HOUR) < tb_pesan_gedung.waktu_pesan ");
+
+			foreach ($query2->result() as $valueq) {
+				$result[$i] = array(
+					'id_paket' => $valueq->id_paket,
+					'nama_paket' =>  $valueq->nama_paket,
+					'id_pesan' => $valueq->id_pesan,
+					'jam_sewa_awal'=>$valueq->jam_sewa_awal,
+					'jam_sewa_akhir'=> $valueq->jam_sewa_akhir,
+					'tanggal_sewa'=>$valueq->tanggal_sewa,
+					'status'=> $valueq->status,
+					'nama_pemesan'=> $valueq->nama_pemesan,
+					'keterangan'=> $valueq->keterangan,
+					'nama_gedung'=> $valueq->nama_gedung,
+					'waktu_pesan'=> $valueq->waktu_pesan,
+					'gambar_gedung'=> $valueq->gambar,
+					'status_pembayaran' => $valueq->status_pembayaran
+				);
+			}
+			$query_ket = $this->db->query("select * from tb_keterangan where id_paket = '".$value->id_paket."'");
+			$ket_paket = array();
+
+			foreach ($query_ket->result() as  $value2) {
+				$tot += $value2->harga_ket;
+				
+			}
+			$result[$i]['total'] = $tot;
+			$i++;
+		}
+		if($query->num_rows() != 0){
+			$result = array(
+				'status' => 'sukses',
+				'message' => 'Transaksi ditemukan',
+				'result' => $result
+			);
+			echo json_encode($result);
+		}else{
+			$result = array(
+				'status' => 'gagal',
+				'message' => 'Transaksi tidak ditemukan'
+			);
+			echo json_encode($result);
+		}
+
+	}
 }
