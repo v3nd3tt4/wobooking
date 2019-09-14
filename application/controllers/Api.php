@@ -322,7 +322,7 @@ class Api extends CI_Controller {
 		$result = array();
 		$i=0;
 		foreach ($query->result() as $value) {
-			$biaya =0;
+			$tot =0;
 			$query2 = $this->db->query("SELECT tb_paket.id_paket, tb_paket.nama_paket, tb_pesan_gedung.id_pesan,
 			tb_pesan_gedung.jam_sewa_awal,
 			tb_pesan_gedung.jam_sewa_akhir, tb_pesan_gedung.tanggal_sewa, tb_pesan_gedung.status, 
