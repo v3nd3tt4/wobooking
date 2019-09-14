@@ -320,6 +320,7 @@ class Api extends CI_Controller {
 		$query = $this->db->query("SELECT * from tb_pesan_gedung where id_user = '$id_user' 
 		and DATE_ADD(NOW(), INTERVAL 2 HOUR) < waktu_pesan");
 		$result = array();
+		$i=0;
 		foreach ($query->result() as $value) {
 			$biaya =0;
 			$query2 = $this->db->query("SELECT tb_paket.id_paket, tb_paket.nama_paket, tb_pesan_gedung.id_pesan,
@@ -332,8 +333,16 @@ class Api extends CI_Controller {
 			 where tb_paket.id_paket = '".$value->id_paket."'
 			 and  DATE_ADD(NOW(), INTERVAL 2 HOUR) < tb_pesan_gedung.waktu_pesan ");
 
+			$query_ket = $this->db->query("select * from tb_keterangan where id_paket = '".$value->id_paket."'");
+			$ket_paket = array();
 
-			$result = $query2->result();
+			foreach ($query_ket->result() as  $value) {
+				$tot += $value->harga_ket;
+			}
+
+
+			$result[$i] = $query2->result();
+			$result[$i]['total'] = $tot;
 		}
 		if($query->num_rows() != 0){
 			$result = array(
