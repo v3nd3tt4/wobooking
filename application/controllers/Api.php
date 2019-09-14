@@ -336,8 +336,8 @@ class Api extends CI_Controller {
 			$query_ket = $this->db->query("select * from tb_keterangan where id_paket = '".$value->id_paket."'");
 			$ket_paket = array();
 
-			foreach ($query_ket->result() as  $value) {
-				$tot += $value->harga_ket;
+			foreach ($query_ket->result() as  $value2) {
+				$tot += $value2->harga_ket;
 				$result[$i] = array(
 					'id_paket' => $value->id_paket,
 					'nama_paket' =>  $value->nama_paket,
