@@ -189,6 +189,7 @@ class Api extends CI_Controller {
 				'nama_pemesan'	=> $this->input->post('nama_pemesan', true),
 				'keterangan'	=> $this->input->post('keterangan', true),
 				'status'	=> 'pending',
+				'waktu_pesan' => date('Y-m-d H:i:s'),
 				'status_pembayaran' => 'Belum Melakukan Pembayaran'
 			);
 			$save = $this->db->insert('tb_pesan_gedung', $data);
