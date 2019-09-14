@@ -357,6 +357,7 @@ class Api extends CI_Controller {
 				
 			}
 			$result[$i]['total'] = $tot;
+			$i++;
 		}
 		if($query->num_rows() != 0){
 			$result = array(
