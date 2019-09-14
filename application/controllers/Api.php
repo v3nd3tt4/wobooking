@@ -240,15 +240,17 @@ class Api extends CI_Controller {
 		$config ['file_name'] = date("YmdHis");
 		$this->upload->initialize($config);
 
-		$query = $this->db->query("select * from tb_transaksi
+		if($this->input->post('type_transaksi', true) == 'Pelunasan'){
+			$query = $this->db->query("select * from tb_transaksi
 		where type_transaksi = 'DP' and id_pesan_gedung='".$this->input->post('id_pesan_gedung', true)."'");
-		if($query->num_rows() == 0){
-			$result = array(
-				'status' => 'gagal',
-				'message' => 'anda belum membayar dp'
-			);
-			echo json_encode($result);
-			die();
+			if($query->num_rows() == 0){
+				$result = array(
+					'status' => 'gagal',
+					'message' => 'anda belum membayar dp'
+				);
+				echo json_encode($result);
+				die();
+			}
 		}else{
 			$query = $this->db->query("select * from tb_transaksi
 			where id_pesan_gedung='".$this->input->post('id_pesan_gedung', true)."' and type_transaksi = '".$this->input->post('type_transaksi', true)."'");
