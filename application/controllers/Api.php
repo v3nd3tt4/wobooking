@@ -367,7 +367,7 @@ class Api extends CI_Controller {
 	public function listFile(){
 		$id_user = $this->input->post('id_user', true);
 		$id_pesan_gedung = $this->input->post('id_pesan_gedung', true);
-		$query = $this->db->query("SELECT * from tb_transaksi 
+		$query = $this->db->query("SELECT tb_transaksi.type_transaksi, tb_transaksi.jumlah_bayar, tb_file_upload.nama_file, tb_transaksi.tanggal_bayar, tb_transaksi.status_bayar from tb_transaksi 
 			left join tb_file_upload on tb_file_upload.id_file_upload = tb_transaksi.id_file_upload 
 			left join tb_pesan_gedung on tb_pesan_gedung.id_pesan = tb_transaksi.id_pesan_gedung
 			left join tb_paket on tb_paket.id_paket = tb_pesan_gedung.id_paket
