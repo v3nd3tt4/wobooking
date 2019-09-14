@@ -232,16 +232,6 @@ class Api extends CI_Controller {
 
 	//upload bukti bayar
 	public function addBooking(){
-		$firstdate = $this->input->post('firstdate', true);
-		$id_gedung = $this->input->post('id_gedung', true);
-		if(!$this->ketersediaanGedung($firstdate,$id_gedung)){
-			$result = array(
-				'status' => 'gagal',
-				'message' => 'gedung tidak tersedia'
-			);
-			echo json_encode($result);
-            die();
-		}
 		$config ['upload_path'] = './file_upload/';
 		$config ['allowed_types'] = 'jpg|jpeg|JPG|JPEG|png|PNG';
 		$config ['max_size'] = '2000';
@@ -258,8 +248,6 @@ class Api extends CI_Controller {
 			die();
 		}else{
 			if(!$this->upload->do_upload('gambar')){
-				// $msg = array('status' => 'failed', 'text' => '<div class="alert alert-danger"><a href="#" class="close" data-dismiss="alert" arial-label="close">&times;</a>'.$this->upload->display_errors().'</div>' );
-				// echo json_encode($msg);
 				$result = array(
 					'status' => 'gagal',
 					'message' => $this->upload->display_errors()
@@ -284,7 +272,7 @@ class Api extends CI_Controller {
 					'type_transaksi'	=> $this->input->post('type_transaksi', true),	
 					'jumlah_bayar'	=> $this->input->post('jumlah_bayar', true),	
 					'tanggal_bayar'	=> date('y-m-d H:i:s'),
-					'status_bayar'	=> $this->input->post('status_bayar', true),
+					'status_bayar'	=> $this->input->post('type_transaksi', true) == 'DP' ? 'DP' : 'Pelunasan',
 					'id_pesan_gedung'	=> $this->input->post('id_pesan_gedung', true),
 				);
 				$save = $this->db->insert('tb_transaksi', $data2);
