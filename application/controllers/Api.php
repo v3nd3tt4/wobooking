@@ -338,7 +338,7 @@ class Api extends CI_Controller {
 					'nama_gedung'=> $valueq->nama_gedung,
 					'waktu_pesan'=> $valueq->waktu_pesan,
 					'gambar_gedung'=> $valueq->gambar,
-					'status_pembayaran' => 
+					'status_pembayaran' => $valueq->status_pemabayaran
 				);
 			}
 			$query_ket = $this->db->query("select * from tb_keterangan where id_paket = '".$value->id_paket."'");
