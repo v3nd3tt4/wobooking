@@ -37,16 +37,16 @@
                             <label>Jenis Kelamin:</label>
                             <select class="form-control" name="jk" required>
                                 <option value="">--pilih--</option>
-                                <option value="pria" <?=$data_user->row()->jenis_kelamin == 'pria'? 'selected':''?>>Pria</option>
-                                <option value="wanita" <?=$data_user->row()->jenis_kelamin == 'wanita'? 'selected':''?>>Wanita</option>
+                                <option value="Laki-Laki" <?=$data_user->row()->jenis_kelamin == 'Laki-Laki'? 'selected':''?>>Pria</option>
+                                <option value="Perempuan" <?=$data_user->row()->jenis_kelamin == 'Perempuan'? 'selected':''?>>Wanita</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label>Level:</label>
                             <select class="form-control" name="level" required>
                                 <option value="">--pilih--</option>
-                                <option value="admin" <?=$data_user->row()->level == 'admin'? 'selected':''?>>Admin</option>
-                                <option value="guest" <?=$data_user->row()->level == 'guest'? 'selected':''?>>Guest</option>
+                                <option value="Admin" <?=$data_user->row()->level == 'Admin'? 'selected':''?>>Admin</option>
+                                <option value="User" <?=$data_user->row()->level == 'User'? 'selected':''?>>Guest</option>
                             </select>
                         </div>
                         <div class="form-group">
