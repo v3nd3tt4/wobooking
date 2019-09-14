@@ -296,7 +296,7 @@ class Api extends CI_Controller {
 						'status'	=> 'ordered',
 						'status_pembayaran' => $this->input->post('type_transaksi', true) == 'DP' ? 'Belum Lunas' : 'Sudah Lunas'
 					);
-					$this->db->update('tb_pesan_gedung', $data3, array('id_pesan' => $this->input->post('id_pesan', true)));
+					$this->db->update('tb_pesan_gedung', $data3, array('id_pesan' => $this->input->post('id_pesan_gedung', true)));
 					if($this->db->trans_status() === FALSE){
 						$this->db->trans_rollback();
 						$result = array(
