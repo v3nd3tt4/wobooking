@@ -341,7 +341,7 @@ class Api extends CI_Controller {
 			}
 
 
-			$result[$i] = $query2->result();
+			$result = $query2->result();
 			$result[$i]['total'] = $tot;
 		}
 		if($query->num_rows() != 0){
