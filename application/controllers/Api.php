@@ -238,7 +238,8 @@ class Api extends CI_Controller {
 		$config ['file_name'] = date("YmdHis");
 		$this->upload->initialize($config);
 
-		$query = $this->db->query("select * from tb_transaksi where type_transaksi = '".$this->input->post('type_transaksi', true)."'");
+		$query = $this->db->query("select * from tb_transaksi
+		where id_pesan_gedung='".$this->input->post('id_pesan_gedung', true)."' and type_transaksi = '".$this->input->post('type_transaksi', true)."'");
 		if($query->num_rows() != 0){
 			$result = array(
 				'status' => 'gagal',
