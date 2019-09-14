@@ -334,26 +334,29 @@ class Api extends CI_Controller {
 			 where tb_paket.id_paket = '".$value->id_paket."'
 			 and  DATE_ADD(NOW(), INTERVAL 2 HOUR) < tb_pesan_gedung.waktu_pesan ");
 
+			foreach ($query2->result() as $valueq) {
+				$result[$i] = array(
+					'id_paket' => $valueq->id_paket,
+					'nama_paket' =>  $valueq->nama_paket,
+					'id_pesan' => $valueq->id_pesan,
+					'jam_sewa_awal'=>$valueq->jam_sewa_awal,
+					'jam_sewa_akhir'=> $valueq->jam_sewa_akhir,
+					'tanggal_sewa'=>$valueq->tanggal_sewa,
+					'status'=> $valueq->status,
+					'nama_pemesan'=> $valueq->nama_pemesan,
+					'keterangan'=> $valueq->keterangan,
+					'nama_gedung'=> $valueq->nama_gedung,
+					'waktu_pesan'=> $valueq->waktu_pesan,
+				);
+			}
 			$query_ket = $this->db->query("select * from tb_keterangan where id_paket = '".$value->id_paket."'");
 			$ket_paket = array();
 
 			foreach ($query_ket->result() as  $value2) {
 				$tot += $value2->harga_ket;
-				$result[$i] = array(
-					// 'id_paket' => $value->id_paket,
-					// 'nama_paket' =>  $value->nama_paket,
-					// 'id_pesan' => $value->id_pesan,
-					// 'jam_sewa_awal'=>$value->jam_sewa_awal,
-					// 'jam_sewa_akhir'=> $value->jam_sewa_akhir,
-					// 'tanggal_sewa'=>$value->tanggal_sewa,
-					// 'status'=> $value->status,
-					// 'nama_pemesan'=> $value->nama_pemesan,
-					// 'keterangan'=> $value->keterangan,
-					// 'nama_gedung'=> $value->nama_gedung,
-					// 'waktu_pesan'=> $value->waktu_pesan,
-					'total' => $tot
-				);
+				
 			}
+			$result[$i]['total'] = $tot;
 		}
 		if($query->num_rows() != 0){
 			$result = array(
