@@ -317,7 +317,7 @@ class Api extends CI_Controller {
 			$query2 = $this->db->query("SELECT tb_paket.id_paket, tb_paket.nama_paket, tb_pesan_gedung.id_pesan,
 			tb_pesan_gedung.jam_sewa_awal, tb_gedung.gambar,
 			tb_pesan_gedung.jam_sewa_akhir, tb_pesan_gedung.tanggal_sewa, tb_pesan_gedung.status, 
-			tb_pesan_gedung.nama_pemesan, tb_pesan_gedung.keterangan, tb_gedung.nama_gedung, tb_pesan_gedung.waktu_pesan, tb_pesan_gedung.status_pemabayaran 
+			tb_pesan_gedung.nama_pemesan, tb_pesan_gedung.keterangan, tb_gedung.nama_gedung, tb_pesan_gedung.waktu_pesan, tb_pesan_gedung.status_pembayaran 
 			from tb_paket 
 			left join tb_pesan_gedung on tb_pesan_gedung.id_paket=tb_paket.id_paket
 			left join tb_gedung on tb_gedung.id_gedung = tb_paket.id_gedung
@@ -338,7 +338,7 @@ class Api extends CI_Controller {
 					'nama_gedung'=> $valueq->nama_gedung,
 					'waktu_pesan'=> $valueq->waktu_pesan,
 					'gambar_gedung'=> $valueq->gambar,
-					'status_pembayaran' => $valueq->status_pemabayaran
+					'status_pembayaran' => $valueq->status_pembayaran
 				);
 			}
 			$query_ket = $this->db->query("select * from tb_keterangan where id_paket = '".$value->id_paket."'");
