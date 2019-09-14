@@ -339,7 +339,7 @@ class Api extends CI_Controller {
 			foreach ($query_ket->result() as  $value) {
 				$tot += $value->harga_ket;
 				$result[$i] = array(
-					'id_paket' => $value->id_paket
+					'id_paket' => $value->id_paket,
 					'nama_paket' =>  $value->nama_paket,
 					'id_pesan' => $value->id_pesan,
 					'jam_sewa_awal'=>$value->jam_sewa_awal,
