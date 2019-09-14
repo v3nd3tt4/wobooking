@@ -31,3 +31,15 @@ for r in results:
 # (DATE_ADD(NOW(), INTERVAL 2 HOUR) > waktu_pesan) 
 # and
 # status = 'pending'
+
+#install orator
+#cara nya: pip install orator
+
+#install pymysql
+#cara nya: pip install pymysql
+
+#cara run crontab linux
+#ini koding nya => @hourly /usr/bin/python /var/www/html/wobooking/setexpired.py
+
+#1. crontab -e
+#2. @hourly /usr/bin/python /var/www/html/wobooking/setexpired.py
