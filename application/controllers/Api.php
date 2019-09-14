@@ -317,9 +317,10 @@ class Api extends CI_Controller {
 		$data = array(
 			'status'	=> 'expired',
 		);
-		$query = $this->db->query("SELECT * from tb_pesan_gedung where id_user = '$id_user'");
+		$query = $this->db->query("SELECT * from tb_pesan_gedung where id_user = '$id_user' DATE_ADD(NOW(), INTERVAL 2 HOUR) < waktu_pesan");
 		$result = array();
 		foreach ($query->result() as $value) {
+			$biaya =0;
 			$query2 = $this->db->query("SELECT tb_paket.id_paket, tb_paket.nama_paket, tb_pesan_gedung.id_pesan,
 			tb_pesan_gedung.jam_sewa_awal,
 			tb_pesan_gedung.jam_sewa_akhir, tb_pesan_gedung.tanggal_sewa, tb_pesan_gedung.status, 
@@ -327,6 +328,7 @@ class Api extends CI_Controller {
 			left join tb_pesan_gedung on tb_pesan_gedung.id_paket=tb_paket.id_paket
 			left join tb_gedung on tb_gedung.id_gedung = tb_paket.id_gedung
 			 where tb_paket.id_paket = '".$value->id_paket."'");
+
 
 			$result = $query2->result();
 		}
