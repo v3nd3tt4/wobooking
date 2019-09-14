@@ -11,9 +11,10 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <h4 class="header-title mb-0">Laporan</h4>
+                        <a href="<?=base_url()?>transaksi/">Back</a>
                     </div>
-
                     <hr/>
+
                     <div class="table-responsive">
                         <table class="table table-striped">
                             <tr>
@@ -26,7 +27,8 @@
                             </tr>
                         </table>
                         <br/><br/>
-                        <table class="table table-striped">
+                        <button class="btn btn-success" onclick="printData()"><i class="fa fa-print"></i> Cetak</button><br/><br/>
+                        <table class="table table-striped" id="printTable">
                             <thead>
                                 <tr>
                                     <th>No</th>
@@ -36,8 +38,9 @@
                                     <th>Gedung</th>
                                     <th>Paket</th>
                                     <th>Status</th>
-                                    <th>Total Bayar</th>
+                                    <th>Total Harga Paket</th>
                                     <th>Sudah dibayar</th>
+                                    <th>Status Bayar</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -69,6 +72,7 @@
                                         <td><?=$row->status?></td>
                                         <td>Rp. <?=number_format($tot, 0, ',', '.')?></td>
                                         <td>Rp. <?=@number_format($tot2, 0, ',', '.')?></td>
+                                        <td><?=$row->status_pembayaran?></td>
                                     </tr>
                                 <?php }?>
                             </tbody>
@@ -81,3 +85,13 @@
     </div>
     <!-- overview area end -->
 </div>
+<script type="text/javascript">
+    function printData()
+    {
+       var divToPrint=document.getElementById("printTable");
+       newWin= window.open("");
+       newWin.document.write(divToPrint.outerHTML);
+       newWin.print();
+       newWin.close();
+    }
+</script>

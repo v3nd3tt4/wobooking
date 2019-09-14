@@ -44,7 +44,7 @@ class Transaksi extends CI_Controller {
 		$first_date = $this->input->post('first_date', true);
 		$end_date = $this->input->post('end_date', true);
 
-		$query = $this->db->query("SELECT * from tb_pesan_gedung left join tb_paket on tb_paket.id_paket = tb_pesan_gedung.id_paket left join tb_gedung on tb_paket.id_gedung = tb_gedung.id_gedung where status in ('pending', 'ordered') and (tanggal_sewa between '$first_date' and '$end_date')");
+		$query = $this->db->query("SELECT * from tb_pesan_gedung left join tb_paket on tb_paket.id_paket = tb_pesan_gedung.id_paket left join tb_gedung on tb_paket.id_gedung = tb_gedung.id_gedung where status in ('pending', 'ordered') and (tanggal_sewa between '$first_date' and '$end_date') order by tanggal_sewa ASC");
 
 		$data = array(
 			'page' => 'transaksi/laporan_range',
