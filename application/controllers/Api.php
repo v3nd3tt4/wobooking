@@ -159,7 +159,7 @@ class Api extends CI_Controller {
 		$query = $this->db->query("SELECT * from tb_pesan_gedung tpg
 		inner join tb_paket tp on tp.id_paket=tpg.id_paket
 		inner join tb_gedung tg on tg.id_gedung=tp.id_gedung
-		where tg.id_gedung='$id_gedung' and tpg.tanggal_sewa='$firstdate' and (tpg.status = 'active' or tpg.status = 'ordered')");
+		where tg.id_gedung='$id_gedung' and tpg.tanggal_sewa='$firstdate' and (tpg.status = 'pending' or tpg.status = 'ordered')");
 		if($query->num_rows() == 0){
 			return true;
 		}else{
@@ -189,6 +189,7 @@ class Api extends CI_Controller {
 				'nama_pemesan'	=> $this->input->post('nama_pemesan', true),
 				'keterangan'	=> $this->input->post('keterangan', true),
 				'status'	=> 'pending',
+				'status_pembayaran' => 'Belum Melakukan Pembayaran'
 			);
 			$save = $this->db->insert('tb_pesan_gedung', $data);
 			if($save){
