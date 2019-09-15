@@ -324,7 +324,7 @@ class Api extends CI_Controller {
 		$data = array(
 			'status'	=> 'expired',
 		);
-		$query = $this->db->query("SELECT * from tb_pesan_gedung where id_user = '$id_user' and DATE_ADD(NOW(), INTERVAL 2 HOUR) < waktu_pesan");
+		$query = $this->db->query("SELECT * from tb_pesan_gedung where id_user = '$id_user'");
 		// $query = $this->db->query("SELECT * from tb_pesan_gedung where (now() > DATE_ADD(waktu_pesan, INTERVAL 2 HOUR)) and status = 'pending'");
 
 		$result = array();
@@ -339,8 +339,7 @@ class Api extends CI_Controller {
 			from tb_paket 
 			left join tb_pesan_gedung on tb_pesan_gedung.id_paket=tb_paket.id_paket
 			left join tb_gedung on tb_gedung.id_gedung = tb_paket.id_gedung
-			 where tb_paket.id_paket = '".$value->id_paket."'
-			 and  DATE_ADD(NOW(), INTERVAL 2 HOUR) < tb_pesan_gedung.waktu_pesan ");
+			 where tb_paket.id_paket = '".$value->id_paket."'");
 
 			foreach ($query2->result() as $valueq) {
 				$result[$i] = array(
@@ -417,8 +416,7 @@ class Api extends CI_Controller {
 		$data = array(
 			'status'	=> 'expired',
 		);
-		$query = $this->db->query("SELECT * from tb_pesan_gedung where id_user = '$id_user' 
-		and (DATE_ADD(NOW(), INTERVAL 2 HOUR) < waktu_pesan) and (waktu_pesan between ('$firstdate' and '$enddate'))");
+		$query = $this->db->query("SELECT * from tb_pesan_gedung where id_user = '$id_user' and  (waktu_pesan between ('$firstdate' and '$enddate'))");
 		$result = array();
 		$i=0;
 		// var_dump($query->result());exit();
@@ -431,8 +429,7 @@ class Api extends CI_Controller {
 			from tb_paket 
 			left join tb_pesan_gedung on tb_pesan_gedung.id_paket=tb_paket.id_paket
 			left join tb_gedung on tb_gedung.id_gedung = tb_paket.id_gedung
-			 where tb_paket.id_paket = '".$value->id_paket."'
-			 and  DATE_ADD(NOW(), INTERVAL 2 HOUR) < tb_pesan_gedung.waktu_pesan ");
+			 where tb_paket.id_paket = '".$value->id_paket."'");
 
 			foreach ($query2->result() as $valueq) {
 				$result[$i] = array(
