@@ -71,4 +71,20 @@ class Transaksi extends CI_Controller {
 		
 
 	}
+
+	public function detail($id_pesan){
+		$query = $this->db->query("SELECT * from tb_pesan_gedung left join tb_paket on tb_paket.id_paket = tb_pesan_gedung.id_paket left join tb_gedung on tb_paket.id_gedung = tb_gedung.id_gedung where id_pesan = '$id_pesan'");
+
+		$query2 = $this->db->query("SELECT * from tb_transaksi left join tb_file_upload on tb_file_upload.id_file_upload = tb_transaksi.id_file_upload where  id_pesan_gedung = '$id_pesan'");
+
+
+		$data = array(
+			'page' => 'transaksi/detail_trx',
+			'link' => 'transaksi',
+			'script' => 'transaksi/script',
+			'data_transaksi' => $query,
+			'data_bukti' => $query2
+		);
+		$this->load->view('template_srtdash/wrapper', $data);
+	}
 }

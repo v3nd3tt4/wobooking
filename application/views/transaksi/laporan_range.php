@@ -15,7 +15,7 @@
                     </div>
                     <hr/>
 
-                    <div class="table-responsive">
+                    
                         <table class="table table-striped">
                             <tr>
                                 <td>Dari</td>
@@ -28,6 +28,7 @@
                         </table>
                         <br/><br/>
                         <!-- <button class="btn btn-success" onclick="printData()"><i class="fa fa-print"></i> Cetak</button><br/><br/> -->
+                    <div class="table-responsive">
                         <table id="myTable" class="table table-striped" id="printTable">
                             <thead>
                                 <tr>
@@ -41,6 +42,7 @@
                                     <th>Total Harga Paket</th>
                                     <th>Sudah dibayar</th>
                                     <th>Status Bayar</th>
+                                    <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -82,6 +84,9 @@
                                             ?>
 
                                             <button class="btn btn-sm <?=$cl?>"><?=$row->status_pembayaran?></button>
+                                        </td>
+                                        <td>
+                                            <a href="<?=base_url()?>transaksi/detail/<?=$row->id_pesan?>" class="btn btn-sm btn-warning">Detail</a>
                                         </td>
                                     </tr>
                                 <?php }?>
