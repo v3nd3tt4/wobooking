@@ -15,7 +15,7 @@
                     </div>
 
                     <hr/>
-                    <form method="POST" action="<?=base_url()?>transaksi/laporan_range">
+                    <form target="_blank"  method="POST" action="<?=base_url()?>transaksi/laporan_range">
                         <div class="form-group">
                             <label>Dari:</label>
                             <input type="date" class="form-control" name="first_date" required>

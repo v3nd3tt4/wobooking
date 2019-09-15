@@ -118,6 +118,7 @@
                                     <th>No</th>
                                     <th>Bukti</th>
                                     <th>Jenis</th>
+                                    <th>Jumlah Bayar</th>
                                     <th>Tanggal Bayar</th>
                                 </tr>
                                 
@@ -128,6 +129,7 @@
                                         <td><?=$no?>.</td>
                                         <td><a target="_blank" href="<?=base_url()?>file_upload/<?=$row_bukti->nama_file?>"><img src="<?=base_url()?>file_upload/<?=$row_bukti->nama_file?>" style="max-width:250px"></a></td>
                                         <td><?=$row_bukti->type_transaksi?></td>
+                                        <td>Rp. <?=number_format($row_bukti->jumlah_bayar,0, ',', '.')?></td>
                                         <td><?=$row_bukti->tanggal_bayar?></td>
                                     </tr>
                                 <?php $no++;}?>
