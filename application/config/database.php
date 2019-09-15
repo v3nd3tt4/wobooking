@@ -78,6 +78,7 @@ $db['default'] = array(
 	'hostname' => 'localhost',
 	'username' => 'root',
 	'password' => 'lupaLagi',
+	// 'password' => 'goldroger27',
 	'database' => 'db_wo',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
