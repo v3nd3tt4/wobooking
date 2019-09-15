@@ -11,7 +11,7 @@
                             <!-- <p>24 H</p> -->
                         </div>
                         <div class="d-flex justify-content-between pb-2">
-                            <h2><?=$data_member->row()->jml_gedung?></h2>
+                            <h2><?=$data_gedung->row()->jml_gedung?></h2>
                             
                             <!-- <span>- 45.87</span> -->
                         </div>
@@ -28,7 +28,7 @@
                             <!-- <p>24 H</p> -->
                         </div>
                         <div class="d-flex justify-content-between pb-2">
-                            <h2><?=$data_gedung->row()->jml_member?></h2>
+                            <h2><?=$data_member->row()->jml_member?></h2>
                             <!-- <span>- 45.87</span> -->
                         </div>
                     </div>
