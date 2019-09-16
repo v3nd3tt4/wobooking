@@ -12,7 +12,7 @@ config = {
 }
 
 db = DatabaseManager(config)
-results = db.select('SELECT * from tb_pesan_gedung where (now() > DATE_ADD(waktu_pesan, INTERVAL 2 HOUR)) and status = "pending"')
+results = db.select('SELECT * from tb_pesan_gedung where (now() > DATE_ADD(waktu_pesan, INTERVAL 2 HOUR)) and status = "pending" and status_pembayaran = "Belum Melakukan Pembayaran"')
 
 
 # print results
