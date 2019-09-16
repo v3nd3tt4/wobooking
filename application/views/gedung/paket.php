@@ -11,6 +11,7 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <h4 class="header-title mb-0">Paket</h4>
+                        
                         <a href="<?=base_url()?>gedung/tambah_paket/<?=$id_gedung?>" class="btn btn-primary"><i class="ti-plus"></i> Tambah</a>
                     </div>
 

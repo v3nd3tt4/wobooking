@@ -11,7 +11,7 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <h4 class="header-title mb-0">Tambah User</h4>
-                        
+                        <a href="<?=base_url()?>user" >Back</a>
                     </div>
 
                     <hr/>
@@ -36,16 +36,16 @@
                             <label>Jenis Kelamin:</label>
                             <select class="form-control" name="jk" required>
                                 <option value="">--pilih--</option>
-                                <option value="pria">Pria</option>
-                                <option value="wanita">Wanita</option>
+                                <option value="Laki-Laki">Laki-Laki</option>
+                                <option value="Perempuan">Perempuan</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label>Level:</label>
                             <select class="form-control" name="level" required>
                                 <option value="">--pilih--</option>
-                                <option value="admin">Admin</option>
-                                <option value="guest">Guest</option>
+                                <option value="Admin">Admin</option>
+                                <option value="User">User</option>
                             </select>
                         </div>
                         <div class="form-group">

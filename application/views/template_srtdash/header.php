@@ -22,6 +22,14 @@
     <link rel="stylesheet" href="<?=base_url()?>assets_srtdash/css/responsive.css">
     <!-- modernizr css -->
     <script src="<?=base_url()?>assets_srtdash/js/vendor/modernizr-2.8.3.min.js"></script>
+    <style type="text/css">
+        .btn-group-xs > .btn, .btn-xs {
+          padding: .25rem .4rem;
+          font-size: .875rem;
+          line-height: .5;
+          border-radius: .2rem;
+        }
+    </style>
 </head>
 <body>
       <!--[if lt IE 8]>

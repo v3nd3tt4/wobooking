@@ -31,8 +31,15 @@ class Srtdash extends CI_Controller {
 	public function index()
 	{
 		// var_dump("expression");exit();
+		$member = $this->db->query("SELECT count(*) as jml_member from tb_user where level = 'User'");
+		$gedung = $this->db->query("SELECT count(*) as jml_gedung from tb_gedung");
+		$pemesanan = $this->db->query("SELECT count(*) as jml_pemesanan from tb_pesan_gedung");
 		$data = array(
-			'page' => 'dashboard_srtdash'
+			'page' => 'dashboard_srtdash',
+			'data_member' => $member,
+			'data_gedung' => $gedung,
+			'data_pemesanan' => $pemesanan
+
 		);
 		$this->load->view('template_srtdash/wrapper', $data);
 	}

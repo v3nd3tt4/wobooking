@@ -44,5 +44,11 @@ class Model extends CI_Model {
       $this->db->delete($table, array($param_id => $id));
       return true;
     }
+
+    function get_sudah_bayar($id_pesan_gedung){
+      $query = $this->db->query("select sum(jumlah_bayar) as tot from tb_transaksi where id_pesan_gedung = '".$id_pesan_gedung."' group by id_pesan_gedung");
+      return $query->row()->tot;
+
+    }
    
 }

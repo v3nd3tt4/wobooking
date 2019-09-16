@@ -22,7 +22,9 @@ class Login extends CI_Controller {
         parent::__construct();
         $this->load->library('image_lib');
         $this->load->library('upload');
-        
+        if($this->session->userdata('id_user')!=''){
+        	echo '<script>alert("Anda sudah login!!");window.location.href = "'.base_url().'srtdash";</script>';
+        }
         
     }
 	public function index()
