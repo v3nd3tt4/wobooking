@@ -296,7 +296,7 @@ class Api extends CI_Controller {
 				$save = $this->db->insert('tb_transaksi', $data2);
 				$data3 = array(
 					// 'status'	=> 'ordered',
-					'status_pembayaran' => $this->input->post('type_transaksi', true) == 'DP' ? 'Belum Lunas' : 'Sudah Lunas'
+					'status_pembayaran' => $this->input->post('type_transaksi', true) == 'DP' ? 'Menunggu Validasi DP' : 'Menunggu Validasi Pelunasan'
 				);
 				$this->db->update('tb_pesan_gedung', $data3, array('id_pesan' => $this->input->post('id_pesan_gedung', true)));
 				if($this->db->trans_status() === FALSE){
