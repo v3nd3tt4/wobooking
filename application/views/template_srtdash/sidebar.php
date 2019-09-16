@@ -19,6 +19,7 @@
                                 <li <?=@$link == 'user' ? 'class="active"' : ''?>><a href="<?=base_url()?>user">User</a></li>
                                 <li <?=@$link == 'gedung' ? 'class="active"' : ''?>><a href="<?=base_url()?>gedung">Gedung</a></li>
                                 <li <?=@$link == 'transaksi' ? 'class="active"' : ''?>><a href="<?=base_url()?>transaksi">Transaksi</a></li>
+                                <li <?=@$link == 'booked' ? 'class="active"' : ''?>><a href="<?=base_url()?>terbooking">Terbooking</a></li>
                             </ul>
                         </li>
                     </ul>
