@@ -340,7 +340,7 @@ class Api extends CI_Controller {
 			from tb_paket 
 			left join tb_pesan_gedung on tb_pesan_gedung.id_paket=tb_paket.id_paket
 			left join tb_gedung on tb_gedung.id_gedung = tb_paket.id_gedung
-			 where tb_paket.id_paket = '".$value->id_paket."'");
+			 where tb_paket.id_paket = '".$value->id_paket."' and tb_pesan_gedung.id_user = '".$id_user."'");
 
 			foreach ($query2->result() as $valueq) {
 				$result[$i] = array(
