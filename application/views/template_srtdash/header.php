@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>WO Booking</title>
+    <title>Gedung Hidup Batak</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" type="image/png" href="<?=base_url()?>assets_srtdash/images/icon/favicon.ico">
     <link rel="stylesheet" href="<?=base_url()?>assets_srtdash/css/bootstrap.min.css">
