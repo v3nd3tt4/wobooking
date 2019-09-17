@@ -6,7 +6,7 @@ config = {
         'host': 'localhost',
         'database': 'db_wo',
         'user': 'root',
-        'password': 'goldroger27',
+        'password': 'lupalagi',
         'prefix': ''
     }
 }

@@ -3,7 +3,7 @@
         <div class="sidebar-header">
             <div class="logo">
                 <a href="<?=base_url()?>srtdash">
-                    <h1 style="color: #fff">WO</h1>
+                    <h1 style="color: #fff">Gedung Hidup Batak</h1>
                     <!-- <img src="<?=base_url()?>assets_srtdash/images/icon/logo.png" alt="logo"> -->
                 </a>
             </div>

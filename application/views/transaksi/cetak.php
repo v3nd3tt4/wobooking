@@ -31,6 +31,7 @@
           /*text-align:right;*/
         }
     </style>
+    
 </head>
 <body>
     <center>
@@ -38,15 +39,11 @@
     </center>
     <hr/>
     <center>
-        <table class="table table-striped">
+        <table>
             <tr>
-                <td>Dari</td>
-                <td>: <?=$from?></td>
+                <td>Dari: <?=$from?> Sampai: <?=$end?> </td>
             </tr>
-            <tr>
-                <td>Sampai</td>
-                <td>: <?=$end?></td>
-            </tr>
+            
         </table>
     </center>
     <br/><br/>
