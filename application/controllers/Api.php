@@ -7,7 +7,8 @@ class Api extends CI_Controller {
         parent::__construct();
         $this->load->library('image_lib');
         $this->load->library('upload');
-        $this->load->model('Model');
+		$this->load->model('Model');
+		$this->load->library('email');
     }
 
 	public function login(){
@@ -111,8 +112,56 @@ class Api extends CI_Controller {
 			echo json_encode($return);
 		}
 	
-	}
+		}
 
+	public function send_email(){
+		$id_user = $this->input->post('id_user');
+		$subject = $this->input->post('subject');
+		$message = $this->input->post('message');
+		$query = $this->db->query("SELECT * FROM tb_user WHERE id_user='$id_user'");
+
+		if($query->num_rows() == 0){
+			$return = array('status' => 'gagal', 'message' => 'Data tidak ada !!');	 
+			echo json_encode($return);
+		}else {
+			// Konfigurasi email
+			$config = [
+				'mailtype'  => 'html',
+				'charset'   => 'utf-8',
+				'protocol'  => 'smtp',
+				'smtp_host' => 'smtp.gmail.com',
+				'smtp_user' => 'percobaan.appscode@gmail.com',  // Email gmail
+				'smtp_pass'   => 'lupaLagi',  // Password gmail				
+				'smtp_port'   => 465,
+				'crlf'    => "\r\n",
+				'newline' => "\r\n"
+			];
+
+			// Load library email dan konfigurasinya
+			$this->load->library('email', $config);
+			// Email dan nama pengirim
+			$this->email->from('percobaan.appscode@gmail.com', 'Admin Wo Booking');
+			// Email penerima
+			$this->email->to('hexabiner808@gmail.com'); // Ganti dengan email tujuan
+			// Subject email
+			$this->email->subject('Ada yang memesan atas nama '.$query->row()->nama);
+			// Isi email
+			$this->email->message('uji coba');
+
+			// Tampilkan pesan sukses atau error
+			if ($this->email->send()) {
+				$return = array('status' => 'sukses', 'message' => 'Berhasil kirim !!');	 
+				echo json_encode($return);
+			} else {
+				$return = array('status' => 'gagal', 'message' => 'Data tidak ada !!');	 
+				echo json_encode($return);
+				show_error($this->email->print_debugger());
+			}
+			
+		}
+		
+	}
+	
 	public function paketRow(){
 		$return = array();
 		$id_gedung = $this->input->post('id_gedung');
