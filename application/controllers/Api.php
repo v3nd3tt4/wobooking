@@ -653,7 +653,7 @@ class Api extends CI_Controller {
 		$ci->email->initialize($config);
 
 		$ci->email->from("percobaan.appscode@gmail.com", 'Notifikasi Pemesanan');
-		$ci->email->to("hexabiner808@gmail.com");
+		$ci->email->to("fajar.skackmoonsterr@gmail.com");
 		$ci->email->subject('Notifikasi Pemesanan Gedung');
 		$ci->email->message($message);
 		$ci->email->send();
