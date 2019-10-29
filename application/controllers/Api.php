@@ -282,6 +282,8 @@ class Api extends CI_Controller {
 			);
 			$save = $this->db->insert('tb_pesan_gedung', $data);
 			if($save){
+				$message = $this->input->post('nama_pemesan', true).' melakukan order, silahkan cek pada aplikasi web admin...';
+				$this->send_mail(array('mochakopiko@gmail.com'), $message);
 				$result = array(
 					'status' => 'sukses',
 					'message' => 'Transaksi berhasil dilakukan'
@@ -389,6 +391,8 @@ class Api extends CI_Controller {
 				$this->db->update('tb_pesan_gedung', $data3, array('id_pesan' => $this->input->post('id_pesan_gedung', true)));
 				if($this->db->trans_status() === FALSE){
 					$this->db->trans_rollback();
+					$message = 'Terdapat user yang mengupload bukti bayar, silahkan cek pada aplikasi';
+					$this->send_mail(array('mochakopiko@gmail.com'), $message);
 					$result = array(
 						'status' => 'gagal',
 						'message' => 'Transaksi gagal dilakukan'
@@ -642,4 +646,37 @@ class Api extends CI_Controller {
 		}
 
 	}
+
+	public function send_mail(
+	  $emailto = array('mochakopiko@gmail.com'),
+	  $message = 'terdapat user yang memesan gedung',
+	  $email = 'percobaan.appscode@gmail.com', 
+	  $password = 'lupaLagi') { 
+		
+		$ci = get_instance();
+		$ci->load->library('email');
+		$config['protocol'] = "smtp";
+		$config['smtp_host'] = "ssl://smtp.gmail.com";
+		$config['smtp_port'] = "465";
+		$config['smtp_user'] = $email; 
+		$config['smtp_pass'] = $password;
+		$config['charset'] = "utf-8";
+		$config['mailtype'] = "html";
+		$config['newline'] = "\r\n";
+
+		$ci->email->initialize($config);
+
+		$ci->email->from($email, 'Notifikasi Pemesanan');
+		$ci->email->to($emailto);
+		$this->email->reply_to('pilopaokta@gmail.com', 'Explendid Videos');
+		$ci->email->subject('Notifikasi Pemesanan Gedung');
+		$ci->email->message($message);
+		$ci->email->send();
+		// echo $ci->email->print_debugger(array('headers'));
+		
+    }
+
+    public function coba_kirim_email(){
+    	$this->send_mail(array('mochakopiko@gmail.com'), 'terdapat order, silahkan cek pada aplikasi admin');
+    }
 }
