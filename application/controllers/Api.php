@@ -232,14 +232,14 @@ class Api extends CI_Controller {
 		if($query->num_rows() != 0){
 			$result = array(
 				'status' => 'gagal',
-				'message' => 'gedung tidak tersedia'
+				'message' => 'gedung tidak tersedia/sudah ada yang memesan'
 			);
 			echo json_encode($result);
             die();
 		}else{
 			$result = array(
 				'status' => 'sukses',
-				'message' => 'tersedia'
+				'message' => 'gedung dapat dipesan'
 			);
 			echo json_encode($result);
 			
