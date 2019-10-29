@@ -242,16 +242,7 @@ class Api extends CI_Controller {
 				$endtime = $endtime <= $starttime ? $endtime + 2400 : $endtime;
 
 				
-				if ( $current > $starttime){
-					var_dump('tidak');
-				}else{
-					if ($starttime >= $endtime && $current <=  ){
-						var_dump('tidak 2');
-					}else{
-						var_dump('bisa 2');
-					}
-					
-					
+			
 				}
 
 				exit();
