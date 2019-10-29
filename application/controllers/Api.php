@@ -8,7 +8,6 @@ class Api extends CI_Controller {
         $this->load->library('image_lib');
         $this->load->library('upload');
 		$this->load->model('Model');
-		$this->load->library('email');
     }
 
 	public function login(){
@@ -95,6 +94,7 @@ class Api extends CI_Controller {
 	}
 
 	public function pesananPaketRow(){
+
 		$return = array();
 		$id_user = $this->input->post('id_user');
 		$query = $this->db->query("select tpg.*, 
@@ -112,54 +112,7 @@ class Api extends CI_Controller {
 			echo json_encode($return);
 		}
 	
-		}
 
-	public function send_email(){
-		$id_user = $this->input->post('id_user');
-		$subject = $this->input->post('subject');
-		$message = $this->input->post('message');
-		$query = $this->db->query("SELECT * FROM tb_user WHERE id_user='$id_user'");
-
-		if($query->num_rows() == 0){
-			$return = array('status' => 'gagal', 'message' => 'Data tidak ada !!');	 
-			echo json_encode($return);
-		}else {
-			// Konfigurasi email
-			$config = [
-				'mailtype'  => 'html',
-				'charset'   => 'utf-8',
-				'protocol'  => 'smtp',
-				'smtp_host' => 'smtp.gmail.com',
-				'smtp_user' => 'percobaan.appscode@gmail.com',  // Email gmail
-				'smtp_pass'   => 'lupaLagi',  // Password gmail				
-				'smtp_port'   => 465,
-				'crlf'    => "\r\n",
-				'newline' => "\r\n"
-			];
-
-			// Load library email dan konfigurasinya
-			$this->load->library('email', $config);
-			// Email dan nama pengirim
-			$this->email->from('percobaan.appscode@gmail.com', 'Admin Wo Booking');
-			// Email penerima
-			$this->email->to('hexabiner808@gmail.com'); // Ganti dengan email tujuan
-			// Subject email
-			$this->email->subject('Ada yang memesan atas nama '.$query->row()->nama);
-			// Isi email
-			$this->email->message('uji coba');
-
-			// Tampilkan pesan sukses atau error
-			if ($this->email->send()) {
-				$return = array('status' => 'sukses', 'message' => 'Berhasil kirim !!');	 
-				echo json_encode($return);
-			} else {
-				$return = array('status' => 'gagal', 'message' => 'Data tidak ada !!');	 
-				echo json_encode($return);
-				show_error($this->email->print_debugger());
-			}
-			
-		}
-		
 	}
 	
 	public function paketRow(){
@@ -208,13 +161,108 @@ class Api extends CI_Controller {
 		$query = $this->db->query("SELECT * from tb_pesan_gedung tpg
 		inner join tb_paket tp on tp.id_paket=tpg.id_paket
 		inner join tb_gedung tg on tg.id_gedung=tp.id_gedung
-		where tg.id_gedung='$id_gedung' and tpg.tanggal_sewa='$firstdate' and (tpg.status = 'pending' or tpg.status = 'ordered')");
+		where tg.id_gedung='$id_gedung' and tpg.tanggal_sewa='$firstdate' and
+		 (tpg.status = 'pending' or tpg.status = 'ordered')");
 		if($query->num_rows() == 0){
 			return true;
 		}else{
 			return false;
 		}
 
+	}
+
+	public function send_email(){
+		$id_user = $this->input->post('id_user');
+		$subject = $this->input->post('subject');
+		$message = $this->input->post('message');
+		$query = $this->db->query("SELECT * FROM tb_user WHERE id_user='$id_user'");
+
+		if($query->num_rows() == 0){
+			$return = array('status' => 'gagal', 'message' => 'Data tidak ada !!');	 
+			echo json_encode($return);
+		}else {
+			// Konfigurasi email
+			$config = [
+				'mailtype'  => 'html',
+				'charset'   => 'utf-8',
+				'protocol'  => 'smtp',
+				'smtp_host' => 'smtp.gmail.com',
+				'smtp_user' => 'percobaan.appscode@gmail.com',  // Email gmail
+				'smtp_pass'   => 'lupaLagi',  // Password gmail				
+				'smtp_port'   => 465,
+				'crlf'    => "\r\n",
+				'newline' => "\r\n"
+			];
+
+			// Load library email dan konfigurasinya
+			$this->load->library('email', $config);
+			// Email dan nama pengirim
+			$this->email->from('percobaan.appscode@gmail.com', 'Admin Wo Booking');
+			// Email penerima
+			$this->email->to('hexabiner808@gmail.com'); // Ganti dengan email tujuan
+			// Subject email
+			$this->email->subject('Ada yang memesan tiket nama '.$query->row()->nama);
+			// Isi email
+			$this->email->message('uji coba');
+
+			// Tampilkan pesan sukses atau error
+			if ($this->email->send()) {
+				$return = array('status' => 'sukses', 'message' => 'Berhasil kirim !!');	 
+				echo json_encode($return);
+			} else {
+				$return = array('status' => 'gagal', 'message' => 'Data tidak ada !!');	 
+				echo json_encode($return);
+				show_error($this->email->print_debugger());
+			}
+			
+		}
+	}
+
+	public function cektglgedung(){
+		$starttime = $this->input->post('jam_sewa_awal', true);
+		$endtime = $this->input->post('jam_sewa_akhir', true);
+		$firstdate = $this->input->post('tanggal_sewa', true);
+		$id_gedung = $this->input->post('id_gedung', true);
+		// if(!$this->ketersediaanGedung($firstdate, $id_gedung)){
+		// 	$result = array(
+		// 		'status' => 'gagal',
+		// 		'message' => 'gedung tidak tersedia'
+		// 	);
+		// 	echo json_encode($result);
+        //     die();
+		// }else{
+			$query = $this->db->query("	SELECT * FROM tb_pesan_gedung 
+			WHERE tanggal_sewa = '".$firstdate."' order by jam_sewa_akhir desc");
+			// var_dump($query->result());
+			// exit();
+			foreach ($query->result() as $value) {
+				$jam_a = $query->row()->jam_sewa_awal;
+				$current = $query->row()->jam_sewa_akhir;
+				
+				$endtime = $endtime <= $starttime ? $endtime + 2400 : $endtime;
+
+				
+				if ( $current > $starttime){
+					var_dump('tidak');
+				}else{
+					if ($starttime >= $endtime && $current <=  ){
+						var_dump('tidak 2');
+					}else{
+						var_dump('bisa 2');
+					}
+					
+					
+				}
+
+				exit();
+				$result = array(
+					'status' => 'sukses',
+					'message' => 'jam tersedia'
+				);
+				echo json_encode($result);
+			
+			}
+		//}
 	}
 
 	//mem booking gedung sebelum bayar apa-apa
@@ -436,52 +484,49 @@ class Api extends CI_Controller {
 
 	//list transaksi
 	public function listTransaksiAll(){
-		//$id_user = $this->input->post('id_user');
-		$data = array(
-			'status'	=> 'expired',
-		);
-		$query = $this->db->query("SELECT * from tb_pesan_gedung");
-		// $query = $this->db->query("SELECT * from tb_pesan_gedung where (now() > DATE_ADD(waktu_pesan, INTERVAL 2 HOUR)) and status = 'pending'");
+		$id_user = $this->input->post('id_user');
 
+		$query = $this->db->query("select tp.*, tpg.*, tg.`nama_gedung`, tg.`gambar` from tb_paket tp
+		inner join tb_pesan_gedung tpg on tpg.`id_paket`=tp.`id_paket`
+		inner join tb_gedung tg on tg.`id_gedung`=tp.`id_gedung` 
+		where tpg.`id_user`='".$id_user."' 
+		order by tpg.`tanggal_sewa` ASC");
+		
 		$result = array();
 		$i=0;
 		// var_dump($query->result());exit();
 		foreach ($query->result() as $value) {
 			$tot =0;
-			$query2 = $this->db->query("SELECT tb_paket.id_paket, tb_paket.nama_paket, tb_pesan_gedung.id_pesan,
-			tb_pesan_gedung.jam_sewa_awal, tb_gedung.gambar,
-			tb_pesan_gedung.jam_sewa_akhir, tb_pesan_gedung.tanggal_sewa, tb_pesan_gedung.status, 
-			tb_pesan_gedung.nama_pemesan, tb_pesan_gedung.keterangan, tb_gedung.nama_gedung, tb_pesan_gedung.waktu_pesan, tb_pesan_gedung.status_pembayaran 
-			from tb_paket 
-			left join tb_pesan_gedung on tb_pesan_gedung.id_paket=tb_paket.id_paket
-			left join tb_gedung on tb_gedung.id_gedung = tb_paket.id_gedung
-			 where tb_paket.id_paket = '".$value->id_paket."'");
+			$query2 = $this->db->query("SELECT tp.*, tpg.*, tg.`nama_gedung`, tg.`gambar` FROM tb_paket tp
+			inner JOIN tb_pesan_gedung tpg ON tpg.`id_paket`=tp.`id_paket`
+			inner JOIN tb_gedung tg ON tg.`id_gedung`=tp.`id_gedung`
+			-- inner JOIN tb_user  tu ON tu.`id_user`=tpg.`id_user`
+			WHERE 
+			tp.`id_paket`='".$value->id_paket."' ORDER BY tpg.`tanggal_sewa` ASC");
 
-			foreach ($query2->result() as $valueq) {
-				$result[$i] = array(
-					'id_paket' => $valueq->id_paket,
-					'nama_paket' =>  $valueq->nama_paket,
-					'id_pesan' => $valueq->id_pesan,
-					'jam_sewa_awal'=>$valueq->jam_sewa_awal,
-					'jam_sewa_akhir'=> $valueq->jam_sewa_akhir,
-					'tanggal_sewa'=>$valueq->tanggal_sewa,
-					'status'=> $valueq->status,
-					'nama_pemesan'=> $valueq->nama_pemesan,
-					'keterangan'=> $valueq->keterangan,
-					'nama_gedung'=> $valueq->nama_gedung,
-					'waktu_pesan'=> $valueq->waktu_pesan,
-					'gambar_gedung'=> $valueq->gambar,
-					'status_pembayaran' => $valueq->status_pembayaran
-				);
-			}
 			$query_ket = $this->db->query("select * from tb_keterangan where id_paket = '".$value->id_paket."'");
 			$ket_paket = array();
-
 			foreach ($query_ket->result() as  $value2) {
 				$tot += $value2->harga_ket;
 				
 			}
 			$result[$i]['total'] = $tot;
+
+			$result[$i]['id_paket']=$value->id_paket;
+			$result[$i]['nama_paket']=$value->nama_paket;
+			$result[$i]['id_pesan']=$value->id_pesan;
+			$result[$i]['jam_sewa_awal']=$value->jam_sewa_awal;
+			$result[$i]['jam_sewa_akhir']=$value->jam_sewa_akhir;
+			$result[$i]['nama_pemesan']=$value->nama_pemesan;
+			$result[$i]['keterangan']=$value->keterangan;
+
+			$result[$i]['nama_gedung']=$value->nama_gedung;
+			$result[$i]['waktu_pesan']=$value->waktu_pesan;
+			$result[$i]['gambar_gedung']=$value->gambar;
+
+			$result[$i]['status_pembayaran']=$value->status_pembayaran;
+			$result[$i]['tanggal_sewa']=$value->tanggal_sewa;
+			$result[$i]['status']=$value->status;
 			$i++;
 		}
 		if($query->num_rows() != 0){
@@ -499,6 +544,23 @@ class Api extends CI_Controller {
 			echo json_encode($result);
 		}
 	}
+
+	public function dataRiwayat(){
+		$return = array();
+		$id_user = $this->input->post('id_user');
+		$query = $this->db->query("SELECT tpg.*, tp.`nama_paket` FROM tb_pesan_gedung tpg
+		INNER JOIN tb_paket tp ON tp.`id_paket`=tpg.`id_paket`
+		INNER JOIN tb_user  tu ON tu.`id_user`=tpg.`id_user`
+		WHERE tpg.`id_user`='".$id_user."' ORDER BY tpg.`tanggal_sewa` ASC");
+		if($query->num_rows() == 0){
+			$return = array('status' => 'gagal', 'message' => 'Data tidak ada !!');	 
+			echo json_encode($return);
+		}else{
+			$return = array('status' => 'sukses', 'message' => 'Data ada...', 'result'=>$query->result());
+			echo json_encode($return);
+		}
+	}
+
 	public function listFile(){
 		$id_user = $this->input->post('id_user', true);
 		$id_pesan_gedung = $this->input->post('id_pesan_gedung', true);
