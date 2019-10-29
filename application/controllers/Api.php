@@ -219,41 +219,31 @@ class Api extends CI_Controller {
 	}
 
 	public function cektglgedung(){
-		$starttime = $this->input->post('jam_sewa_awal', true);
-		$endtime = $this->input->post('jam_sewa_akhir', true);
+		///$starttime = $this->input->post('jam_sewa_awal', true);
+		//$endtime = $this->input->post('jam_sewa_akhir', true);
 		$firstdate = $this->input->post('tanggal_sewa', true);
 		$id_gedung = $this->input->post('id_gedung', true);
-		// if(!$this->ketersediaanGedung($firstdate, $id_gedung)){
-		// 	$result = array(
-		// 		'status' => 'gagal',
-		// 		'message' => 'gedung tidak tersedia'
-		// 	);
-		// 	echo json_encode($result);
-        //     die();
-		// }else{
-			$query = $this->db->query("	SELECT * FROM tb_pesan_gedung 
-			WHERE tanggal_sewa = '".$firstdate."' order by jam_sewa_akhir desc");
-			// var_dump($query->result());
-			// exit();
-			foreach ($query->result() as $value) {
-				$jam_a = $query->row()->jam_sewa_awal;
-				$current = $query->row()->jam_sewa_akhir;
-				
-				$endtime = $endtime <= $starttime ? $endtime + 2400 : $endtime;
-
-				
-			
-				}
-
-				exit();
-				$result = array(
-					'status' => 'sukses',
-					'message' => 'jam tersedia'
-				);
-				echo json_encode($result);
+		
+		$query = $this->db->query("SELECT * from tb_pesan_gedung tpg
+		inner join tb_paket tp on tp.id_paket=tpg.id_paket
+		inner join tb_gedung tg on tg.id_gedung=tp.id_gedung
+		where tg.id_gedung='$id_gedung' and tpg.tanggal_sewa='$firstdate' and
+		 (tpg.status = 'pending' or tpg.status = 'ordered')");
+		if($query->num_rows() != 0){
+			$result = array(
+				'status' => 'gagal',
+				'message' => 'gedung tidak tersedia'
+			);
+			echo json_encode($result);
+            die();
+		}else{
+			$result = array(
+				'status' => 'sukses',
+				'message' => 'tersedia'
+			);
+			echo json_encode($result);
 			
 			}
-		//}
 	}
 
 	//mem booking gedung sebelum bayar apa-apa
@@ -283,7 +273,7 @@ class Api extends CI_Controller {
 			$save = $this->db->insert('tb_pesan_gedung', $data);
 			if($save){
 				$message = $this->input->post('nama_pemesan', true).' melakukan order, silahkan cek pada aplikasi web admin...';
-				$this->send_mail(array('mochakopiko@gmail.com'), $message);
+				$this->send_mail($message);
 				$result = array(
 					'status' => 'sukses',
 					'message' => 'Transaksi berhasil dilakukan'
@@ -647,28 +637,23 @@ class Api extends CI_Controller {
 
 	}
 
-	public function send_mail(
-	  $emailto = array('mochakopiko@gmail.com'),
-	  $message = 'terdapat user yang memesan gedung',
-	  $email = 'percobaan.appscode@gmail.com', 
-	  $password = 'lupaLagi') { 
+	public function send_mail($message) { 
 		
 		$ci = get_instance();
 		$ci->load->library('email');
 		$config['protocol'] = "smtp";
 		$config['smtp_host'] = "ssl://smtp.gmail.com";
 		$config['smtp_port'] = "465";
-		$config['smtp_user'] = $email; 
-		$config['smtp_pass'] = $password;
+		$config['smtp_user'] = "percobaan.appscode@gmail.com"; 
+		$config['smtp_pass'] = "lupaLagi";
 		$config['charset'] = "utf-8";
 		$config['mailtype'] = "html";
 		$config['newline'] = "\r\n";
 
 		$ci->email->initialize($config);
 
-		$ci->email->from($email, 'Notifikasi Pemesanan');
-		$ci->email->to($emailto);
-		$this->email->reply_to('pilopaokta@gmail.com', 'Explendid Videos');
+		$ci->email->from("percobaan.appscode@gmail.com", 'Notifikasi Pemesanan');
+		$ci->email->to("hexabiner808@gmail.com");
 		$ci->email->subject('Notifikasi Pemesanan Gedung');
 		$ci->email->message($message);
 		$ci->email->send();
